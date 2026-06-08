@@ -47,16 +47,18 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <AuthShell
-      title="Atur ulang kata sandi"
-      description="Masukkan alamat email Anda dan kami akan mengirimkan link untuk mengatur ulang kata sandi Anda."
-      footer={
-        <Link href="/login" className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
-          <ArrowLeft className="h-3.5 w-3.5" />
-          Kembali ke halaman masuk
-        </Link>
-      }
-    >
+    <>
+      <title>Lupa Kata Sandi | BudgedIn</title>
+      <AuthShell
+        title="Atur ulang kata sandi"
+        description="Masukkan alamat email Anda dan kami akan mengirimkan link untuk mengatur ulang kata sandi Anda."
+        footer={
+          <Link href="/login" className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Kembali ke halaman masuk
+          </Link>
+        }
+      >
       {isSuccess ? (
         <div className="flex flex-col items-center gap-4 py-6 text-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
@@ -103,5 +105,6 @@ export default function ForgotPasswordPage() {
         </form>
       )}
     </AuthShell>
+    </>
   );
 }

@@ -62,18 +62,20 @@ export default function LoginPage() {
   };
 
   return (
-    <AuthShell
-      title="Selamat datang kembali di BudgedIn"
-      description="Masuk untuk mengelola keuangan, melacak pengeluaran, dan mencapai target tabungan Anda."
-      footer={
-        <p>
-          Belum punya akun?{' '}
-          <Link href="/register" className="font-medium text-primary hover:underline">
-            Daftar
-          </Link>
-        </p>
-      }
-    >
+    <>
+      <title>Masuk | BudgedIn</title>
+      <AuthShell
+        title="Selamat datang kembali di BudgedIn"
+        description="Masuk untuk mengelola keuangan, melacak pengeluaran, dan mencapai target tabungan Anda."
+        footer={
+          <p>
+            Belum punya akun?{' '}
+            <Link href="/register" className="font-medium text-primary hover:underline">
+              Daftar
+            </Link>
+          </p>
+        }
+      >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">
@@ -177,5 +179,6 @@ export default function LoginPage() {
         </Button>
       </form>
     </AuthShell>
+    </>
   );
 }

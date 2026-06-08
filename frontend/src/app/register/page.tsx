@@ -69,18 +69,20 @@ export default function RegisterPage() {
   };
 
   return (
-    <AuthShell
-      title="Mulai kelola uang Anda"
-      description="Buat akun BudgedIn Anda dan kendalikan keuangan Anda hari ini."
-      footer={
-        <p>
-          Sudah punya akun?{' '}
-          <Link href="/login" className="font-medium text-primary hover:underline">
-            Masuk
-          </Link>
-        </p>
-      }
-    >
+    <>
+      <title>Daftar | BudgedIn</title>
+      <AuthShell
+        title="Mulai kelola uang Anda"
+        description="Buat akun BudgedIn Anda dan kendalikan keuangan Anda hari ini."
+        footer={
+          <p>
+            Sudah punya akun?{' '}
+            <Link href="/login" className="font-medium text-primary hover:underline">
+              Masuk
+            </Link>
+          </p>
+        }
+      >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <label htmlFor="fullName" className="mb-1.5 block text-sm font-medium text-slate-700">
@@ -208,5 +210,6 @@ export default function RegisterPage() {
         </Button>
       </form>
     </AuthShell>
+    </>
   );
 }

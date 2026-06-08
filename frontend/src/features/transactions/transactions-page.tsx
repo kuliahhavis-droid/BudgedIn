@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import {
   Plus, Search, Filter, Pencil, Trash2, ArrowUpRight, ArrowDownRight, MoreVertical,
-  Utensils, Car, Home, GraduationCap, Gamepad2, ShoppingBag, Wifi, Coins, Laptop, Heart, HelpCircle, Download
+  Utensils, Car, Home, GraduationCap, Gamepad2, ShoppingBag, Wifi, Coins, Laptop, Heart, HelpCircle, Download,
+  Camera, Loader2
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
@@ -99,6 +100,33 @@ export function TransactionsPage() {
   })
 
   const selectedType = watch('type')
+
+  const [isScanning, setIsScanning] = useState(false)
+
+  const handleScanReceipt = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setIsScanning(true)
+    const toastId = toast.loading('Sedang memproses struk belanja Anda...')
+
+    try {
+      const { scanReceipt } = await import('@/lib/ocr')
+      const data = await scanReceipt(file)
+
+      setValue('title', data.merchantName)
+      setValue('amount', data.amount)
+      setValue('transactionDate', data.transactionDate)
+
+      toast.success('Struk berhasil dipindai! Silakan tinjau data.', { id: toastId })
+    } catch (err: any) {
+      console.error(err)
+      toast.error(err.message || 'Gagal memproses struk. Silakan isi manual.', { id: toastId })
+    } finally {
+      setIsScanning(false)
+      e.target.value = ''
+    }
+  }
 
   const handleOpenCreate = () => {
     setSelectedId(null)
@@ -298,6 +326,44 @@ export function TransactionsPage() {
             <DialogTitle>{selectedId ? 'Edit Transaksi' : 'Tambah Transaksi'}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-6 pb-2">
+            {/* Scan Receipt Section */}
+            {!selectedId && (
+              <div className="bg-slate-50 dark:bg-slate-900/40 p-4 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center gap-2">
+                <p className="text-xs text-muted-foreground">Malas mengetik? Pindai struk/nota belanja Anda secara lokal.</p>
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  className="hidden"
+                  id="receipt-upload"
+                  onChange={handleScanReceipt}
+                  disabled={isScanning}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={cn(
+                    "rounded-full bg-white dark:bg-slate-950 shadow-sm border border-slate-200",
+                    isScanning && "opacity-70 pointer-events-none"
+                  )}
+                  disabled={isScanning}
+                  onClick={() => document.getElementById('receipt-upload')?.click()}
+                >
+                  {isScanning ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin text-green-500" />
+                      Memindai Struk...
+                    </>
+                  ) : (
+                    <>
+                      <Camera className="mr-2 h-4 w-4 text-green-500" />
+                      Pindai Struk / Nota
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
+
             {/* Title */}
             <div>
               <label className="text-sm font-medium text-slate-700 block mb-1.5">Judul</label>

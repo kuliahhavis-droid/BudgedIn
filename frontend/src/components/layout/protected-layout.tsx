@@ -73,7 +73,7 @@ export function ProtectedLayout({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
+      <div className="flex h-[100dvh] items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
           <div className="flex h-14 w-14 items-center justify-center rounded-full overflow-hidden animate-pulse-glow">
             <img src="/logo.png" alt="BudgedIn Logo" className="h-full w-full object-cover" />
@@ -106,7 +106,7 @@ export function ProtectedLayout({ children }: { children: React.ReactNode }) {
     : 'U';
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-[100dvh] overflow-hidden bg-background">
       {/* Desktop Sidebar */}
       <aside className="hidden w-64 flex-shrink-0 flex-col border-r border-border bg-white md:flex">
         {/* Logo */}
@@ -275,7 +275,7 @@ export function ProtectedLayout({ children }: { children: React.ReactNode }) {
         </main>
 
         {/* Mobile Bottom Nav */}
-        <nav className="relative flex h-20 items-end justify-around border-t border-slate-100 bg-white/95 pb-safe backdrop-blur-md md:hidden shadow-lg">
+        <nav className="relative flex h-20 flex-shrink-0 items-end justify-around border-t border-slate-100 bg-white/95 pb-safe backdrop-blur-md md:hidden shadow-lg">
           {/* Transaksi */}
           <Link
             href="/transactions"

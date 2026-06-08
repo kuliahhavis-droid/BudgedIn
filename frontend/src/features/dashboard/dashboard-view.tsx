@@ -30,6 +30,7 @@ import {
   Shield,
 } from 'lucide-react';
 import { useDashboard } from '@/hooks/use-dashboard';
+import { useAuthStore } from '@/stores/auth-store';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -95,37 +96,52 @@ function HealthScoreRing({ score }: { score: number }) {
   const radius = 60;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
-  const color = score >= 70 ? '#22C55E' : score >= 40 ? '#F59E0B' : '#EF4444';
   const label = score >= 70 ? 'Sangat Baik' : score >= 40 ? 'Cukup' : 'Perlu Perbaikan';
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <svg width="160" height="160" viewBox="0 0 160 160" className="drop-shadow-sm">
+      <svg width="170" height="170" viewBox="0 0 160 160" className="drop-shadow-md select-none">
+        <defs>
+          <linearGradient id="healthGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10B981" />
+            <stop offset="100%" stopColor="#06B6D4" />
+          </linearGradient>
+          <linearGradient id="warningGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#F59E0B" />
+            <stop offset="100%" stopColor="#EF4444" />
+          </linearGradient>
+        </defs>
         <circle
           cx="80"
           cy="80"
           r={radius}
           fill="none"
-          stroke="#E2E8F0"
-          strokeWidth="10"
+          stroke="#F1F5F9"
+          strokeWidth="12"
         />
         <circle
           cx="80"
           cy="80"
           r={radius}
           fill="none"
-          stroke={color}
-          strokeWidth="10"
+          stroke={score >= 70 ? 'url(#healthGrad)' : 'url(#warningGrad)'}
+          strokeWidth="12"
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           transform="rotate(-90 80 80)"
           className="transition-all duration-1000 ease-out"
         />
-        <text x="80" y="72" textAnchor="middle" className="text-3xl font-bold" fill="#0F172A">
+        <circle
+          cx="80"
+          cy="80"
+          r={radius - 9}
+          fill="#F8FAFC"
+        />
+        <text x="80" y="78" textAnchor="middle" className="text-4xl font-black tracking-tight" fill="#0F172A">
           {score}
         </text>
-        <text x="80" y="96" textAnchor="middle" className="text-xs" fill="#64748B">
+        <text x="80" y="102" textAnchor="middle" className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
           {label}
         </text>
       </svg>
@@ -250,68 +266,133 @@ export function DashboardView() {
   }
 
   const { currentBalance, totalIncome, totalExpenses, totalTransactions, recentTransactions, monthlyOverview, budgetOverview, savingsGoals, healthScore } = dashboardData;
-
-  const statCards = [
-    {
-      title: 'Saldo Saat Ini',
-      value: fmt.format(currentBalance),
-      icon: <DollarSign className="h-5 w-5" />,
-      iconBg: 'bg-emerald-500/10 text-emerald-600',
-      accent: 'from-emerald-500 to-teal-500',
-    },
-    {
-      title: 'Total Pemasukan',
-      value: fmt.format(totalIncome),
-      icon: <TrendingUp className="h-5 w-5" />,
-      iconBg: 'bg-green-500/10 text-green-600',
-      accent: 'from-green-500 to-emerald-500',
-    },
-    {
-      title: 'Total Pengeluaran',
-      value: fmt.format(totalExpenses),
-      icon: <TrendingDown className="h-5 w-5" />,
-      iconBg: 'bg-red-500/10 text-red-600',
-      accent: 'from-red-500 to-rose-500',
-    },
-    {
-      title: 'Transaksi',
-      value: totalTransactions.toLocaleString(),
-      icon: <Receipt className="h-5 w-5" />,
-      iconBg: 'bg-blue-500/10 text-blue-600',
-      accent: 'from-blue-500 to-indigo-500',
-    },
-  ];
+  const user = useAuthStore((state) => state.user);
 
   return (
     <div className="space-y-6">
-      {/* ─── Stat Cards ─── */}
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {statCards.map((card, idx) => (
-          <div
-            key={card.title}
-            className={cn(
-              'group relative overflow-hidden rounded-3xl border border-slate-200/60 bg-white/80 shadow-soft backdrop-blur-sm transition-all duration-300 hover:shadow-glow animate-slide-up',
-              idx === 1 && 'delay-75',
-              idx === 2 && 'delay-150',
-              idx === 3 && 'delay-225'
-            )}
-          >
-            <div className={cn('absolute inset-y-0 left-0 w-1 bg-gradient-to-b', card.accent)} />
-            <div className="p-6 pl-7">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-500">{card.title}</p>
-                  <p className="mt-2 text-2xl font-bold tracking-tight text-slate-900 animate-count-up">
-                    {card.value}
-                  </p>
+      {/* ─── Stat Grid ─── */}
+      <section className="grid gap-6 grid-cols-1 md:grid-cols-12">
+        {/* Virtual Debit Card - Column span 5 on desktop, 12 on mobile/tablet */}
+        <div className="md:col-span-12 xl:col-span-5 flex flex-col justify-between">
+          <div className="relative overflow-hidden rounded-[28px] bg-gradient-to-tr from-emerald-950 via-emerald-800 to-teal-600 p-6 text-white shadow-soft border border-emerald-500/25 min-h-[210px] flex flex-col justify-between group animate-slide-up select-none">
+            {/* Card background glowing orb */}
+            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-emerald-400/20 blur-3xl group-hover:scale-110 transition-transform duration-700" />
+            <div className="absolute -left-10 -bottom-10 h-32 w-32 rounded-full bg-teal-400/20 blur-3xl" />
+            
+            {/* Card Texture Overlay */}
+            <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px] opacity-[0.03] pointer-events-none" />
+
+            {/* Top Section: Brand & Chip */}
+            <div className="flex justify-between items-start relative z-10">
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-extrabold text-sm tracking-tight">BudgedIn</span>
+                  <span className="px-1.5 py-0.5 rounded bg-white/20 text-[7px] font-black tracking-wider uppercase backdrop-blur-sm">PWA</span>
                 </div>
-                <div className={cn('flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl transition-colors', card.iconBg)}>
-                  {card.icon}
+                <p className="text-[8px] text-emerald-300/90 font-bold tracking-wider mt-0.5 uppercase">KARTU RENCANA MAHASISWA</p>
+              </div>
+              
+              {/* Chip and Contactless Icons */}
+              <div className="flex items-center gap-2">
+                {/* Contactless Signal */}
+                <svg className="h-4.5 w-4.5 text-emerald-200/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                {/* Golden Chip */}
+                <div className="h-7 w-9 rounded bg-gradient-to-br from-amber-350 via-yellow-400 to-amber-250 border border-amber-400/50 shadow-inner flex flex-col justify-between p-1.5 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_45%,rgba(0,0,0,0.1)_50%,transparent_55%)]" />
+                  <div className="w-full h-px bg-amber-500/40" />
+                  <div className="w-full h-px bg-amber-500/40" />
                 </div>
               </div>
             </div>
+
+            {/* Middle Section: Balance */}
+            <div className="my-4 relative z-10">
+              <p className="text-[9px] text-emerald-200/70 font-extrabold tracking-widest uppercase">SALDO AKTIF SAAT INI</p>
+              <p className="text-3xl font-black mt-1 tracking-tight tabular-nums select-all drop-shadow-sm">
+                {fmt.format(currentBalance)}
+              </p>
+            </div>
+
+            {/* Bottom Section: Cardholder & Details */}
+            <div className="flex justify-between items-end relative z-10 border-t border-white/10 pt-3">
+              <div className="min-w-0 flex-1 mr-4">
+                <p className="text-[7px] text-emerald-300/80 font-bold uppercase tracking-widest">PEMEGANG KARTU</p>
+                <p className="text-xs font-bold truncate tracking-wide mt-0.5">
+                  {user?.fullName ?? 'Mahasiswa BudgedIn'}
+                </p>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-[7px] text-emerald-300/80 font-bold uppercase tracking-widest">TIPE AKUN</p>
+                <p className="text-[10px] font-bold text-emerald-100 tracking-wide mt-0.5">PREMIUM FREE</p>
+              </div>
+            </div>
           </div>
-        ))}
+        </div>
+
+        {/* Total Pemasukan - Column span 4 on tablet, 2 on desktop */}
+        <div className="md:col-span-4 xl:col-span-2 group relative overflow-hidden rounded-[28px] border border-slate-200/60 bg-white/80 p-6 shadow-soft backdrop-blur-sm transition-all duration-300 hover:shadow-glow hover:border-emerald-500/25 animate-slide-up delay-75">
+          <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-green-500 to-emerald-500" />
+          <div className="flex flex-col justify-between h-full min-h-[160px] md:min-h-0">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">TOTAL PEMASUKAN</p>
+                <p className="mt-3 text-2xl font-black tracking-tight text-slate-900 animate-count-up tabular-nums">
+                  {fmt.format(totalIncome)}
+                </p>
+              </div>
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-green-500/10 text-green-600">
+                <TrendingUp className="h-5 w-5" />
+              </div>
+            </div>
+            <div className="mt-4 border-t border-slate-100 pt-3 text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+              Bulan Ini
+            </div>
+          </div>
+        </div>
+
+        {/* Total Pengeluaran - Column span 4 on tablet, 2 on desktop */}
+        <div className="md:col-span-4 xl:col-span-2 group relative overflow-hidden rounded-[28px] border border-slate-200/60 bg-white/80 p-6 shadow-soft backdrop-blur-sm transition-all duration-300 hover:shadow-glow hover:border-red-500/25 animate-slide-up delay-150">
+          <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-red-500 to-rose-500" />
+          <div className="flex flex-col justify-between h-full min-h-[160px] md:min-h-0">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">TOTAL PENGELUARAN</p>
+                <p className="mt-3 text-2xl font-black tracking-tight text-slate-900 animate-count-up tabular-nums">
+                  {fmt.format(totalExpenses)}
+                </p>
+              </div>
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-red-500/10 text-red-600">
+                <TrendingDown className="h-5 w-5" />
+              </div>
+            </div>
+            <div className="mt-4 border-t border-slate-100 pt-3 text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+              Bulan Ini
+            </div>
+          </div>
+        </div>
+
+        {/* Transaksi - Column span 4 on tablet, 3 on desktop */}
+        <div className="md:col-span-4 xl:col-span-3 group relative overflow-hidden rounded-[28px] border border-slate-200/60 bg-white/80 p-6 shadow-soft backdrop-blur-sm transition-all duration-300 hover:shadow-glow hover:border-blue-500/25 animate-slide-up delay-225">
+          <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-500" />
+          <div className="flex flex-col justify-between h-full min-h-[160px] md:min-h-0">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">TRANSAKSI TERCATAT</p>
+                <p className="mt-3 text-2xl font-black tracking-tight text-slate-900 animate-count-up tabular-nums">
+                  {totalTransactions.toLocaleString()}
+                </p>
+              </div>
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-600">
+                <Receipt className="h-5 w-5" />
+              </div>
+            </div>
+            <div className="mt-4 border-t border-slate-100 pt-3 text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+              Riwayat Total
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ─── Monthly Overview + Health Score ─── */}
@@ -379,28 +460,28 @@ export function DashboardView() {
                 return (
                   <div
                     key={tx.id}
-                    className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50/50 px-4 py-3 transition-colors hover:bg-slate-50"
+                    className="flex items-center justify-between rounded-2xl border border-slate-100/80 bg-slate-50/40 px-4 py-3 transition-all duration-300 hover:bg-white hover:border-slate-200 hover:shadow-soft group/item"
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className={cn('p-2 rounded-xl relative shrink-0', config.bg, config.text)}>
-                        <Icon className="h-4 w-4" />
+                    <div className="flex items-center gap-3.5 min-w-0 transition-transform duration-300 group-hover/item:translate-x-1">
+                      <div className={cn('p-2.5 rounded-xl relative shrink-0 shadow-sm transition-all duration-300 group-hover/item:scale-110', config.bg, config.text)}>
+                        <Icon className="h-4.5 w-4.5" />
                         <span className={cn(
-                          "absolute -top-0.5 -right-0.5 flex h-3 w-3 items-center justify-center rounded-full text-[7px] text-white border border-white font-bold",
-                          tx.type === 'income' ? "bg-green-500" : "bg-red-500"
+                          "absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full text-[8px] text-white border-2 border-white font-black",
+                          tx.type === 'income' ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" : "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]"
                         )}>
                           {tx.type === 'income' ? '+' : '-'}
                         </span>
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-slate-900">{tx.title}</p>
-                        <p className="text-xs text-slate-500">
+                        <p className="truncate text-sm font-bold text-slate-800 transition-colors group-hover/item:text-slate-900">{tx.title}</p>
+                        <p className="text-[11px] text-slate-400 font-medium mt-0.5">
                           {tx.category} · {fmtDate(tx.transactionDate)}
                         </p>
                       </div>
                     </div>
                     <p
                       className={cn(
-                        'shrink-0 text-sm font-semibold',
+                        'shrink-0 text-sm font-bold tracking-tight transition-transform duration-300 group-hover/item:-translate-x-1',
                         tx.type === 'income' ? 'text-emerald-600' : 'text-red-500'
                       )}
                     >
@@ -446,14 +527,14 @@ export function DashboardView() {
                       {statusLabel(budgetOverview.status)}
                     </Badge>
                   </div>
-                  <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
+                  <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100/80 border border-slate-200/30">
                     <div
                       className={cn(
                         'h-full rounded-full transition-all duration-700 ease-out',
-                        budgetOverview.status === 'safe' && 'bg-gradient-to-r from-emerald-400 to-green-500',
-                        budgetOverview.status === 'warning' && 'bg-gradient-to-r from-amber-400 to-yellow-500',
-                        budgetOverview.status === 'critical' && 'bg-gradient-to-r from-red-400 to-rose-500',
-                        budgetOverview.status === 'over_budget' && 'bg-gradient-to-r from-red-500 to-red-600 animate-pulse'
+                        budgetOverview.status === 'safe' && 'bg-gradient-to-r from-emerald-400 to-green-500 shadow-[0_0_12px_rgba(16,185,129,0.4)]',
+                        budgetOverview.status === 'warning' && 'bg-gradient-to-r from-amber-400 to-yellow-500 shadow-[0_0_12px_rgba(245,158,11,0.4)]',
+                        budgetOverview.status === 'critical' && 'bg-gradient-to-r from-red-400 to-rose-500 shadow-[0_0_12px_rgba(239,68,68,0.4)]',
+                        budgetOverview.status === 'over_budget' && 'bg-gradient-to-r from-red-500 to-red-600 animate-pulse shadow-[0_0_16px_rgba(239,68,68,0.6)]'
                       )}
                       style={{ width: `${Math.min(100, budgetOverview.percentageUsed)}%` }}
                     />
