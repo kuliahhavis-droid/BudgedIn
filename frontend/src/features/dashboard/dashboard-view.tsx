@@ -245,6 +245,7 @@ function WelcomeState() {
 
 export function DashboardView() {
   const { data: dashboardData, isPending, error } = useDashboard();
+  const user = useAuthStore((state) => state.user);
 
   const isEmpty = useMemo(() => {
     if (!dashboardData) return true;
@@ -266,7 +267,6 @@ export function DashboardView() {
   }
 
   const { currentBalance, totalIncome, totalExpenses, totalTransactions, recentTransactions, monthlyOverview, budgetOverview, savingsGoals, healthScore } = dashboardData;
-  const user = useAuthStore((state) => state.user);
 
   return (
     <div className="space-y-6">
