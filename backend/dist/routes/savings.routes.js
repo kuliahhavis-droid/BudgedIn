@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { savingsController } from '../controllers/savings.controller.js';
+import { requireAuth } from '../middlewares/auth.middleware.js';
+export const savingsRouter = Router();
+savingsRouter.use(requireAuth);
+savingsRouter.get('/', savingsController.list);
+savingsRouter.post('/', savingsController.create);
+savingsRouter.patch('/:id', savingsController.update);
+savingsRouter.delete('/:id', savingsController.delete);
+savingsRouter.post('/:id/contributions', savingsController.contribute);
