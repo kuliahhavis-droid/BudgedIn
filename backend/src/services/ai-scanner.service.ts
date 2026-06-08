@@ -22,7 +22,7 @@ export const aiScannerService = {
     
     // Gunakan model gemini-1.5-flash yang sangat responsif dan cost-effective
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-1.5-flash-latest',
       generationConfig: {
         responseMimeType: 'application/json'
       }
