@@ -13,6 +13,10 @@ export const createApp = () => {
 
   app.set('trust proxy', 1);
   app.use(helmet());
+  app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Private-Network', 'true');
+    next();
+  });
   app.use(
     cors({
       origin: env.CORS_ORIGIN.split(',').map((value) => value.trim()),
