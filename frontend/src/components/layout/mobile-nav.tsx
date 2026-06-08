@@ -12,6 +12,7 @@ import {
   BarChart3,
   User,
   X,
+  Bot,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -24,6 +25,7 @@ const tabs = [
 
 const moreItems = [
   { href: '/reports', label: 'Laporan', icon: BarChart3 },
+  { href: '/ai-assistant', label: 'Asisten AI', icon: Bot },
   { href: '/profile', label: 'Profil', icon: User },
 ];
 

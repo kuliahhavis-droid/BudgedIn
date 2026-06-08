@@ -6,6 +6,7 @@ import { profileRouter } from './profile.routes.js';
 import { reportRouter } from './report.routes.js';
 import { savingsRouter } from './savings.routes.js';
 import { transactionRouter } from './transaction.routes.js';
+import { aiRouter } from './ai.routes.js';
 
 export const apiRouter = Router();
 
@@ -16,3 +17,4 @@ apiRouter.use('/savings-goals', savingsRouter);
 apiRouter.use('/reports', reportRouter);
 apiRouter.use('/notifications', notificationRouter);
 apiRouter.use('/profile', profileRouter);
+apiRouter.use('/ai', aiRouter);
