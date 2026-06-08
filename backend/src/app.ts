@@ -36,6 +36,10 @@ export const createApp = () => {
     })
   );
 
+  app.get('/', (_req, res) => {
+    res.json({ success: true, message: 'Welcome to BudgedIn Backend API!' });
+  });
+
   app.get('/api/v1', (_req, res) => {
     res.json({ success: true, message: 'BudgedIn API v1' });
   });
