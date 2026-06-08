@@ -6,7 +6,8 @@ export const aiController = {
   chat: asyncHandler(async (req, res) => {
     const { message } = req.body;
     if (!message || typeof message !== 'string') {
-      return res.status(400).json({ success: false, error: 'Pesan obrolan (message) wajib disertakan' });
+      res.status(400).json({ success: false, error: 'Pesan obrolan (message) wajib disertakan' });
+      return;
     }
 
     const userId = req.user!.id;
