@@ -239,6 +239,15 @@ export function GoalsPage() {
               {!isCompleted && daysLeft <= 0 && ' • Terlewat'}
             </span>
           </div>
+
+          {!isCompleted && daysLeft > 0 && (
+            <div className="text-xs text-slate-500 bg-blue-50/50 p-3 rounded-2xl border border-blue-100/30 space-y-1">
+              <p className="font-semibold text-slate-700">💡 Estimasi Rencana Tabungan:</p>
+              <p className="leading-relaxed">
+                Anda perlu menabung sekitar <span className="font-bold text-blue-600">{formatCurrency(Math.ceil((goal.targetAmount - goal.currentAmount) / daysLeft))}</span>/hari atau <span className="font-bold text-blue-600">{formatCurrency(Math.ceil((goal.targetAmount - goal.currentAmount) / (daysLeft / 7)))}</span>/minggu agar target tercapai tepat waktu.
+              </p>
+            </div>
+          )}
         </div>
 
         {!isCompleted && (

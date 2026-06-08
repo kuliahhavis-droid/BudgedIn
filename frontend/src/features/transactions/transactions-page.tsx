@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import {
   Plus, Search, Filter, Pencil, Trash2, ArrowUpRight, ArrowDownRight, MoreVertical,
-  Utensils, Car, Home, GraduationCap, Gamepad2, ShoppingBag, Wifi, Coins, Laptop, Heart, HelpCircle
+  Utensils, Car, Home, GraduationCap, Gamepad2, ShoppingBag, Wifi, Coins, Laptop, Heart, HelpCircle, Download
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
@@ -153,15 +153,47 @@ export function TransactionsPage() {
     }
   }
 
+  const handleExportCSV = () => {
+    try {
+      if (transactions.length === 0) {
+        toast.error('Tidak ada transaksi untuk diekspor');
+        return;
+      }
+      const headers = ['Tanggal', 'Judul', 'Tipe', 'Kategori', 'Jumlah', 'Catatan'];
+      const rows = (transactions as any[]).map(tx => [
+        tx.transactionDate ? format(new Date(tx.transactionDate), 'yyyy-MM-dd') : '',
+        tx.title,
+        tx.type === 'income' ? 'Pemasukan' : 'Pengeluaran',
+        tx.category,
+        tx.amount,
+        tx.description || ''
+      ]);
+      const csvContent = [headers.join(','), ...rows.map(e => e.map(val => `"${val}"`).join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `budgedin-transaksi-${format(new Date(), 'yyyy-MM-dd')}.csv`;
+      link.click();
+      toast.success('Transaksi sukses diekspor ke CSV');
+    } catch (e) {
+      toast.error('Gagal mengekspor CSV');
+    }
+  };
+
   const categories = selectedType === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-3xl font-bold tracking-tight">Transaksi</h1>
-        <Button onClick={handleOpenCreate} className="bg-green-500 hover:bg-green-600 text-white rounded-full shadow-soft">
-          <Plus className="mr-2 h-4 w-4" /> Tambah Transaksi
-        </Button>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button variant="outline" onClick={handleExportCSV} className="rounded-full shadow-soft flex-1 sm:flex-initial">
+            <Download className="mr-2 h-4 w-4" /> Ekspor CSV
+          </Button>
+          <Button onClick={handleOpenCreate} className="bg-green-500 hover:bg-green-600 text-white rounded-full shadow-soft flex-1 sm:flex-initial">
+            <Plus className="mr-2 h-4 w-4" /> Tambah Transaksi
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}
