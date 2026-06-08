@@ -16,6 +16,7 @@ import {
   X,
   ChevronDown,
   Home,
+  Bot,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useAuthStore } from '../../stores/auth-store';
@@ -28,6 +29,7 @@ const navItems = [
   { href: '/budgets', label: 'Anggaran', icon: Wallet },
   { href: '/goals', label: 'Target', icon: Target },
   { href: '/reports', label: 'Laporan', icon: BarChart3 },
+  { href: '/ai-assistant', label: 'Asisten AI', icon: Bot },
   { href: '/profile', label: 'Profil', icon: User },
 ];
 
