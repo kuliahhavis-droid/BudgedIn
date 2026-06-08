@@ -22,7 +22,8 @@ export const transactionController = {
   scanReceipt: asyncHandler(async (req, res) => {
     const { image } = req.body;
     if (!image) {
-      return res.status(400).json({ success: false, error: 'Data gambar Base64 wajib disertakan' });
+      res.status(400).json({ success: false, error: 'Data gambar Base64 wajib disertakan' });
+      return;
     }
     const data = await aiScannerService.scanReceipt(image);
     res.json({ success: true, data });
