@@ -15,7 +15,7 @@ export const aiController = {
     // 1. Proses pesan menggunakan Gemini AI
     const result = await aiService.processChat(userId, message);
 
-    let createdTransaction = null;
+    let createdTransaction: any = null;
 
     // 2. Jika AI mendeteksi intensi mencatat transaksi, eksekusi pembuatan transaksi di DB
     if (result.action === 'create_transaction' && result.transaction) {
