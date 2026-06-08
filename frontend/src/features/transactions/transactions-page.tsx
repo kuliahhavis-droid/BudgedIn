@@ -202,10 +202,10 @@ export function TransactionsPage() {
         </div>
       ) : (
         <div className={cn(
-          "bg-white rounded-3xl shadow-sm border overflow-hidden transition-all duration-300",
+          "bg-white rounded-3xl shadow-sm border overflow-x-auto transition-all duration-300",
           isFetching && "opacity-60 saturate-50 pointer-events-none"
         )}>
-          <div className="divide-y">
+          <div className="divide-y min-w-[600px] md:min-w-0">
             {(transactions as any[]).map((tx) => {
               const config = CATEGORY_CONFIGS[tx.category] || CATEGORY_CONFIGS['Lainnya']
               const Icon = config.icon
