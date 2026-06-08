@@ -6,6 +6,7 @@ export const transactionRouter = Router();
 transactionRouter.use(requireAuth);
 transactionRouter.get('/', transactionController.list);
 transactionRouter.post('/', transactionController.create);
+transactionRouter.post('/scan-receipt', transactionController.scanReceipt);
 transactionRouter.patch('/:id', transactionController.update);
 transactionRouter.delete('/:id', transactionController.delete);
 

@@ -14,7 +14,8 @@ const envSchema = z.object({
   DATABASE_URL: z.string().min(1).optional(),
   DIRECT_URL: z.string().optional(),
   JWT_AUDIENCE: z.string().default('authenticated'),
-  JWT_ISSUER: z.string().optional()
+  JWT_ISSUER: z.string().optional(),
+  GEMINI_API_KEY: z.string().optional()
 });
 
 export const env = envSchema.parse(process.env);

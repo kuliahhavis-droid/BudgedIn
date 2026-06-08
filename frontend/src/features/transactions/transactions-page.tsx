@@ -102,6 +102,7 @@ export function TransactionsPage() {
   const selectedType = watch('type')
 
   const [isScanning, setIsScanning] = useState(false)
+  const [isScanningAI, setIsScanningAI] = useState(false)
 
   const handleScanReceipt = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -124,6 +125,65 @@ export function TransactionsPage() {
       toast.error(err.message || 'Gagal memproses struk. Silakan isi manual.', { id: toastId })
     } finally {
       setIsScanning(false)
+      e.target.value = ''
+    }
+  }
+
+  const handleAIScanReceipt = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Buka dialog tambah transaksi & set loading scanning
+    setSelectedId(null)
+    reset({
+      title: '',
+      description: '',
+      amount: 0,
+      type: 'expense',
+      category: '',
+      transactionDate: new Date().toISOString().split('T')[0],
+    })
+    setIsDialogOpen(true)
+    setIsScanningAI(true)
+
+    const toastId = toast.loading('Mengonversi gambar struk...')
+
+    try {
+      // Baca file ke Base64
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => resolve(reader.result as string)
+        reader.onerror = (err) => reject(err)
+      })
+
+      toast.loading('Menganalisis struk dengan Gemini AI...', { id: toastId })
+
+      const { apiPost } = await import('@/services/api')
+      const response = await apiPost<{
+        merchantName: string;
+        amount: number;
+        transactionDate: string;
+        type: 'income' | 'expense';
+        category: string;
+      }>('/transactions/scan-receipt', { image: base64Data })
+
+      if (response.success && response.data) {
+        const { merchantName, amount, transactionDate, type, category } = response.data
+        setValue('title', merchantName)
+        setValue('amount', amount)
+        setValue('transactionDate', transactionDate)
+        setValue('type', type)
+        setValue('category', category)
+        toast.success('Pindai Gemini AI sukses! Silakan tinjau data.', { id: toastId })
+      } else {
+        toast.error('Gagal mengekstrak data dari AI.', { id: toastId })
+      }
+    } catch (err: any) {
+      console.error(err)
+      toast.error(err.message || 'Gagal terhubung dengan server AI.', { id: toastId })
+    } finally {
+      setIsScanningAI(false)
       e.target.value = ''
     }
   }
@@ -218,6 +278,36 @@ export function TransactionsPage() {
           <Button variant="outline" onClick={handleExportCSV} className="rounded-full shadow-soft flex-1 sm:flex-initial">
             <Download className="mr-2 h-4 w-4" /> Ekspor CSV
           </Button>
+
+          <input
+            type="file"
+            accept="image/*"
+            capture="environment"
+            className="hidden"
+            id="ai-receipt-upload"
+            onChange={handleAIScanReceipt}
+            disabled={isScanningAI}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => document.getElementById('ai-receipt-upload')?.click()}
+            className="rounded-full shadow-soft flex-1 sm:flex-initial border-emerald-200 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400"
+            disabled={isScanningAI}
+          >
+            {isScanningAI ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin text-emerald-500" />
+                Memindai...
+              </>
+            ) : (
+              <>
+                <Camera className="mr-2 h-4 w-4 text-emerald-500" />
+                Scan dengan AI
+              </>
+            )}
+          </Button>
+
           <Button onClick={handleOpenCreate} className="bg-green-500 hover:bg-green-600 text-white rounded-full shadow-soft flex-1 sm:flex-initial">
             <Plus className="mr-2 h-4 w-4" /> Tambah Transaksi
           </Button>
@@ -322,6 +412,27 @@ export function TransactionsPage() {
       {/* Form Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent maxWidth="md">
+          {/* Gemini AI Scanning Glassmorphism Overlay */}
+          {isScanningAI && (
+            <div className="absolute inset-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-50 flex flex-col items-center justify-center gap-4 rounded-3xl animate-fade-in select-none">
+              <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 relative overflow-hidden shadow-inner">
+                {/* Glowing ring */}
+                <div className="absolute inset-0 border-2 border-emerald-500 rounded-3xl animate-ping opacity-45" />
+                <Camera className="h-9 w-9 animate-pulse" />
+              </div>
+              <div className="text-center space-y-1">
+                <h4 className="font-bold text-lg text-slate-800 dark:text-slate-100 tracking-tight">Gemini AI Sedang Memindai...</h4>
+                <p className="text-xs text-muted-foreground max-w-[280px] leading-relaxed">
+                  Kami sedang mengekstrak nama merchant, total nominal, tanggal, dan kategori dari struk Anda secara otomatis.
+                </p>
+              </div>
+              {/* Animated laser line */}
+              <div className="w-[80%] h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent relative overflow-hidden mt-2">
+                <div className="absolute inset-0 bg-emerald-400 w-1/3 animate-shimmer animate-pulse" />
+              </div>
+            </div>
+          )}
+
           <DialogHeader>
             <DialogTitle>{selectedId ? 'Edit Transaksi' : 'Tambah Transaksi'}</DialogTitle>
           </DialogHeader>
