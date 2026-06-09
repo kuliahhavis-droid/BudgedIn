@@ -93,102 +93,104 @@ export default function HomePage() {
         <div className="absolute bottom-[20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-300/10 blur-[110px] mix-blend-multiply animate-pulse delay-700" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 lg:px-8 relative z-10">
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:py-6 md:px-6 lg:px-8 relative z-10">
         
         {/* Floating Glass Navigation Header */}
-        <header className="sticky top-4 z-50 flex items-center justify-between rounded-full border border-white/60 bg-white/70 px-6 py-3.5 shadow-soft backdrop-blur-md transition-all hover:bg-white/80 animate-in fade-in slide-in-from-top-4 duration-700">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden shadow-md shadow-emerald-500/10 border border-white">
+        <header className="sticky top-2 sm:top-4 z-50 flex items-center justify-between rounded-full border border-white/60 bg-white/70 px-4 py-2.5 sm:px-6 sm:py-3.5 shadow-soft backdrop-blur-md transition-all hover:bg-white/80 animate-in fade-in slide-in-from-top-4 duration-700">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full overflow-hidden shadow-md shadow-emerald-500/10 border border-white shrink-0">
               <img src="/logo.png" alt="BudgedIn Logo" className="h-full w-full object-cover" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <p className="text-base font-extrabold tracking-tight text-slate-800 leading-none">BudgedIn</p>
+                <p className="text-sm sm:text-base font-extrabold tracking-tight text-slate-800 leading-none">BudgedIn</p>
                 <Badge className="bg-emerald-500/10 hover:bg-emerald-500/10 text-emerald-700 text-[8px] font-bold px-1.5 py-0 border-0 leading-none scale-90">PWA</Badge>
               </div>
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest leading-none mt-1">Khusus Mahasiswa</p>
+              <p className="text-[8px] sm:text-[10px] font-semibold text-slate-400 uppercase tracking-widest leading-none mt-1">Khusus Mahasiswa</p>
             </div>
           </div>
-          <nav className="flex items-center gap-2 text-sm font-semibold">
-            <Link href="/login" className="rounded-full px-4 py-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900">
+          <nav className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold">
+            <Link href="/login" className="rounded-full px-2.5 py-1.5 sm:px-4 sm:py-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900">
               Masuk
             </Link>
-            <Button asChild className="rounded-full bg-slate-900 px-6 hover:bg-slate-800 text-white shadow-soft transition-all hover:scale-105 active:scale-95">
-              <Link href="/register">Mulai Sekarang</Link>
+            <Button asChild className="rounded-full bg-slate-900 px-4 sm:px-6 py-1.5 sm:py-2 hover:bg-slate-800 text-white shadow-soft transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
+              <Link href="/register">
+                Mulai<span className="hidden sm:inline"> Sekarang</span>
+              </Link>
             </Button>
           </nav>
         </header>
 
         {/* Hero Section */}
-        <section className="grid gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-24">
+        <section className="grid gap-8 lg:gap-12 py-12 lg:py-24 grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] items-center">
           <div className="max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-150 fill-mode-both">
-            <Badge variant="success" className="mb-6 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold text-emerald-700 gap-1.5 shadow-sm">
-              <Sparkles className="h-3.5 w-3.5 text-emerald-600 animate-spin" style={{ animationDuration: '6s' }} /> 
-              Manajer Keuangan Pintar & Installable
+            <Badge variant="success" className="mb-6 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-semibold text-emerald-700 gap-1.5 shadow-sm inline-flex max-w-full">
+              <Sparkles className="h-3.5 w-3.5 text-emerald-600 animate-spin shrink-0" style={{ animationDuration: '6s' }} /> 
+              <span className="truncate">Manajer Keuangan Pintar & Installable</span>
             </Badge>
-            <h1 className="text-5xl font-black tracking-tight text-slate-900 sm:text-7xl/none leading-[1.05]">
-              Atur uang kuliah <br />
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-slate-900 leading-[1.15] sm:leading-[1.05]">
+              Atur uang kuliah <br className="hidden sm:inline" />
               <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-indigo-600 bg-clip-text text-transparent">secara cerdas.</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600 font-medium">
+            <p className="mt-4 sm:mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-slate-600 font-medium">
               Bebaskan diri dari stres finansial di akhir bulan. Catat pengeluaran rutin, buat batas anggaran per kategori, dan saksikan target tabungan Anda tercapai secara otomatis.
             </p>
             
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Button asChild size="lg" className="rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 px-8 hover:opacity-90 text-white shadow-lg shadow-emerald-500/20 transition-all hover:scale-105 active:scale-95 border-0">
-                <Link href="/register" className="flex items-center gap-2 font-bold">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+              <Button asChild size="lg" className="w-full sm:w-auto justify-center rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 px-6 sm:px-8 hover:opacity-90 text-white shadow-lg shadow-emerald-500/20 transition-all hover:scale-102 sm:hover:scale-105 active:scale-98 sm:active:scale-95 border-0 text-sm sm:text-base font-bold">
+                <Link href="/register" className="flex items-center gap-2 font-bold justify-center w-full">
                   Mulai Pencatatan <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild className="rounded-full px-8 bg-white/80 border-slate-200 hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-sm">
-                <Link href="/login" className="font-semibold">Buka Dashboard</Link>
+              <Button variant="outline" size="lg" asChild className="w-full sm:w-auto justify-center rounded-full px-6 sm:px-8 bg-white/80 border-slate-200 hover:bg-slate-100 transition-all hover:scale-102 sm:hover:scale-105 active:scale-98 sm:active:scale-95 shadow-sm text-sm sm:text-base font-semibold">
+                <Link href="/login" className="justify-center w-full">Buka Dashboard</Link>
               </Button>
             </div>
             
             {/* Quick Stat Highlights */}
-            <div className="mt-12 grid grid-cols-3 gap-3 sm:gap-6 border-t border-slate-200/60 pt-8">
+            <div className="mt-10 sm:mt-12 grid grid-cols-3 gap-3 sm:gap-6 border-t border-slate-200/60 pt-6 sm:pt-8">
               <div>
-                <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">10k+</p>
-                <p className="text-[10px] sm:text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider">Mahasiswa</p>
+                <p className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">10k+</p>
+                <p className="text-[9px] sm:text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider">Mahasiswa</p>
               </div>
               <div>
-                <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Rp2M+</p>
-                <p className="text-[10px] sm:text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider">Telah Ditabung</p>
+                <p className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">Rp2M+</p>
+                <p className="text-[9px] sm:text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider">Telah Ditabung</p>
               </div>
               <div>
-                <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">98%</p>
-                <p className="text-[10px] sm:text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider">Tingkat Kepuasan</p>
+                <p className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">98%</p>
+                <p className="text-[9px] sm:text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider">Tingkat Kepuasan</p>
               </div>
             </div>
           </div>
 
           {/* Interactive CSS & SVG Dashboard Preview */}
-          <div className="relative rounded-[36px] border border-white/60 bg-white/30 p-4 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-right-8 duration-1000 delay-300 fill-mode-both">
-            <div className="absolute inset-0 -z-10 rounded-[36px] bg-gradient-to-b from-emerald-100/30 to-transparent" />
-            <div className="rounded-[28px] bg-slate-950 p-6 text-white shadow-2xl border border-slate-800/80 relative overflow-hidden">
+          <div className="relative rounded-[24px] sm:rounded-[36px] border border-white/60 bg-white/30 p-2 sm:p-4 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-right-8 duration-1000 delay-300 fill-mode-both">
+            <div className="absolute inset-0 -z-10 rounded-[24px] sm:rounded-[36px] bg-gradient-to-b from-emerald-100/30 to-transparent" />
+            <div className="rounded-[18px] sm:rounded-[28px] bg-slate-950 p-4 sm:p-6 text-white shadow-2xl border border-slate-800/80 relative overflow-hidden">
               
               {/* Browser control header */}
               <div className="flex justify-between items-center mb-6">
                 <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500/80" />
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500/80" />
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500/80" />
                 </div>
-                <span className="text-[10px] text-slate-500 font-mono tracking-wider">budgedin.app/dashboard</span>
+                <span className="text-[9px] sm:text-[10px] text-slate-500 font-mono tracking-wider">budgedin.app/dashboard</span>
               </div>
  
-              <div className="flex items-center justify-between mb-6 border-b border-slate-800 pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-slate-800 pb-4">
                 <div>
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">SELAMAT DATANG</p>
-                  <p className="text-base font-black text-white mt-0.5">Rian Pratama 👋</p>
+                  <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider">SELAMAT DATANG</p>
+                  <p className="text-sm sm:text-base font-black text-white mt-0.5">Rian Pratama 👋</p>
                 </div>
-                <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full text-[10px] text-emerald-400 font-bold">
-                  <CheckCircle2 className="h-3 w-3" /> Akun Terverifikasi
+                <div className="self-start sm:self-auto flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] text-emerald-400 font-bold">
+                  <CheckCircle2 className="h-3 w-3 shrink-0" /> Akun Terverifikasi
                 </div>
               </div>
 
               {/* Virtual Debit Card Mockup */}
-              <div className="relative overflow-hidden rounded-[24px] bg-gradient-to-tr from-emerald-950 via-emerald-800 to-teal-600 p-5 text-white shadow-lg border border-emerald-500/25 min-h-[175px] flex flex-col justify-between group select-none mb-6">
+              <div className="relative overflow-hidden rounded-[16px] sm:rounded-[24px] bg-gradient-to-tr from-emerald-950 via-emerald-800 to-teal-600 p-4 sm:p-5 text-white shadow-lg border border-emerald-500/25 min-h-[150px] sm:min-h-[175px] flex flex-col justify-between group select-none mb-6">
                 {/* Card background glowing orb */}
                 <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-emerald-400/20 blur-2xl" />
                 
@@ -199,10 +201,10 @@ export default function HomePage() {
                 <div className="flex justify-between items-start relative z-10">
                   <div>
                     <div className="flex items-center gap-1">
-                      <span className="font-extrabold text-xs tracking-tight text-white">BudgedIn</span>
-                      <span className="px-1 py-0.2 rounded bg-white/20 text-[6px] font-black tracking-wider uppercase backdrop-blur-sm">PWA</span>
+                      <span className="font-extrabold text-[10px] sm:text-xs tracking-tight text-white">BudgedIn</span>
+                      <span className="px-1 py-0.2 rounded bg-white/20 text-[5px] sm:text-[6px] font-black tracking-wider uppercase backdrop-blur-sm">PWA</span>
                     </div>
-                    <p className="text-[7px] text-emerald-300 font-semibold tracking-wider uppercase mt-0.5">KARTU RENCANA MAHASISWA</p>
+                    <p className="text-[6px] sm:text-[7px] text-emerald-300 font-semibold tracking-wider uppercase mt-0.5">KARTU RENCANA MAHASISWA</p>
                   </div>
                   
                   {/* Chip and Contactless Icons */}
@@ -210,7 +212,7 @@ export default function HomePage() {
                     <svg className="h-3.5 w-3.5 text-emerald-200/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
-                    <div className="h-5.5 w-7 rounded bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-200 border border-amber-400/30 flex flex-col justify-between p-1 overflow-hidden relative">
+                    <div className="h-4 w-6 sm:h-5.5 sm:w-7 rounded bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-200 border border-amber-400/30 flex flex-col justify-between p-0.5 sm:p-1 overflow-hidden relative">
                       <div className="w-full h-px bg-amber-500/40" />
                       <div className="w-full h-px bg-amber-500/40" />
                     </div>
@@ -218,57 +220,57 @@ export default function HomePage() {
                 </div>
 
                 {/* Middle Section: Balance */}
-                <div className="my-2.5 relative z-10">
-                  <p className="text-[8px] text-emerald-200/60 font-bold tracking-widest uppercase">SALDO AKTIF SAAT INI</p>
-                  <p className="text-2xl font-black tracking-tight mt-0.5">Rp 4.250.000</p>
+                <div className="my-2 relative z-10">
+                  <p className="text-[7px] sm:text-[8px] text-emerald-200/60 font-bold tracking-widest uppercase">SALDO AKTIF SAAT INI</p>
+                  <p className="text-xl sm:text-2xl font-black tracking-tight mt-0.5">Rp 4.250.000</p>
                 </div>
 
                 {/* Bottom Section: Cardholder & Details */}
-                <div className="flex justify-between items-end relative z-10 border-t border-white/10 pt-2.5">
+                <div className="flex justify-between items-end relative z-10 border-t border-white/10 pt-2 sm:pt-2.5">
                   <div className="min-w-0 flex-1 mr-2">
-                    <p className="text-[6px] text-emerald-300/80 font-bold uppercase tracking-widest leading-none">PEMEGANG KARTU</p>
-                    <p className="text-[10px] font-bold truncate tracking-wide mt-0.5 leading-none">Rian Pratama</p>
+                    <p className="text-[5px] sm:text-[6px] text-emerald-300/80 font-bold uppercase tracking-widest leading-none">PEMEGANG KARTU</p>
+                    <p className="text-[8px] sm:text-[10px] font-bold truncate tracking-wide mt-0.5 leading-none">Rian Pratama</p>
                   </div>
                   <div className="text-right shrink-0">
-                    <p className="text-[6px] text-emerald-300/80 font-bold uppercase tracking-widest leading-none">TIPE AKUN</p>
-                    <p className="text-[8px] font-bold text-emerald-100 tracking-wide mt-0.5 leading-none">PREMIUM FREE</p>
+                    <p className="text-[5px] sm:text-[6px] text-emerald-300/80 font-bold uppercase tracking-widest leading-none">TIPE AKUN</p>
+                    <p className="text-[7px] sm:text-[8px] font-bold text-emerald-100 tracking-wide mt-0.5 leading-none">PREMIUM FREE</p>
                   </div>
                 </div>
               </div>
 
               {/* Grid content inside mockup dashboard */}
-              <div className="grid gap-4 grid-cols-2">
+              <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
                 
                 {/* Financial Health Index */}
-                <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between">
+                <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-3 sm:p-4 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
-                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">SKOR FINANSIAL</p>
-                      <Zap className="h-3.5 w-3.5 text-amber-400" />
+                      <p className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-wider">SKOR FINANSIAL</p>
+                      <Zap className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-400" />
                     </div>
-                    <p className="text-4xl font-black text-emerald-400 mt-2">86<span className="text-xs text-slate-600 font-normal">/100</span></p>
+                    <p className="text-3xl sm:text-4xl font-black text-emerald-400 mt-1 sm:mt-2">86<span className="text-xs text-slate-600 font-normal">/100</span></p>
                   </div>
-                  <div className="text-[10px] text-slate-400 mt-4 border-t border-slate-800/60 pt-2 font-medium">
+                  <div className="text-[9px] sm:text-[10px] text-slate-400 mt-3 sm:mt-4 border-t border-slate-800/60 pt-2 font-medium">
                     Kategori keuangan: <span className="text-emerald-400 font-bold">SEHAT</span>
                   </div>
                 </div>
 
                 {/* Savings Target Mini Card */}
-                <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between">
+                <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-3 sm:p-4 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
-                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">TARGET TABUNGAN</p>
-                      <Target className="h-3.5 w-3.5 text-sky-400" />
+                      <p className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-wider">TARGET TARGET</p>
+                      <Target className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-sky-400" />
                     </div>
-                    <p className="text-xs font-bold truncate mt-2">💻 Laptop Kuliah</p>
+                    <p className="text-xs font-bold truncate mt-1 sm:mt-2">💻 Laptop Kuliah</p>
                   </div>
                   
-                  <div className="mt-3">
-                    <div className="flex justify-between text-[8px] text-slate-500 mb-1">
+                  <div className="mt-2.5 sm:mt-3">
+                    <div className="flex justify-between text-[7px] sm:text-[8px] text-slate-500 mb-1">
                       <span>Progres 68%</span>
-                      <span>Rp5.4M / Rp8M</span>
+                      <span>Rp5.4M/Rp8M</span>
                     </div>
-                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-slate-800 h-1 sm:h-1.5 rounded-full overflow-hidden">
                       <div className="bg-gradient-to-r from-sky-400 to-blue-500 h-full rounded-full" style={{ width: '68%' }} />
                     </div>
                   </div>
@@ -277,9 +279,9 @@ export default function HomePage() {
               </div>
 
               {/* Dynamic SVG Spline Chart Preview */}
-              <div className="mt-4 bg-slate-900/60 rounded-2xl p-4 border border-slate-800/80">
-                <p className="text-[9px] font-bold text-slate-400 mb-3 uppercase tracking-wider">TREN KAS BULANAN</p>
-                <div className="h-28 w-full relative">
+              <div className="mt-4 bg-slate-900/60 rounded-2xl p-3 sm:p-4 border border-slate-800/80">
+                <p className="text-[8px] sm:text-[9px] font-bold text-slate-400 mb-3 uppercase tracking-wider">TREN KAS BULANAN</p>
+                <div className="h-24 sm:h-28 w-full relative">
                   <svg viewBox="0 0 400 120" className="w-full h-full">
                     <defs>
                       <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
@@ -304,33 +306,33 @@ export default function HomePage() {
         </section>
 
         {/* Bento Grid Features Section */}
-        <section className="py-20 md:py-28 border-t border-slate-200/60">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-4xl font-extrabold tracking-tight text-slate-900">
+        <section className="py-12 sm:py-20 md:py-28 border-t border-slate-200/60">
+          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900">
               Kenapa Mahasiswa Memilih BudgedIn?
             </h2>
-            <p className="mt-4 text-slate-500 font-medium leading-relaxed">
+            <p className="mt-3 sm:mt-4 text-sm sm:text-base text-slate-500 font-medium leading-relaxed">
               Didesain khusus untuk pola hidup mahasiswa. Lacak keuangan, kendalikan anggaran bulanan, dan capai impian Anda tanpa kerumitan.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-3">
             {/* Bento Card 1: Lacak Setiap Rupiah */}
-            <div className="md:col-span-2 group overflow-hidden rounded-[32px] border border-slate-200 bg-white/50 p-8 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-glow hover:border-emerald-500/25 flex flex-col sm:flex-row justify-between gap-6 items-center">
+            <div className="md:col-span-2 group overflow-hidden rounded-[24px] sm:rounded-[32px] border border-slate-200 bg-white/50 p-6 sm:p-8 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-glow hover:border-emerald-500/25 flex flex-col sm:flex-row justify-between gap-6 items-start sm:items-center">
               <div className="max-w-sm">
                 <div className="mb-5 inline-flex rounded-2xl p-3 border shadow-sm transition-all duration-300 group-hover:scale-110 text-emerald-600 bg-emerald-50 border-emerald-100/80 dark:bg-emerald-950/20 dark:border-emerald-900/30">
                   <Wallet className="h-5 w-5" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-950 group-hover:text-emerald-700 transition-colors">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-950 group-hover:text-emerald-700 transition-colors">
                   Lacak Setiap Rupiah
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-500 font-medium">
+                <p className="mt-3 text-xs sm:text-sm leading-relaxed text-slate-500 font-medium">
                   Catat pemasukan, pengeluaran jajan, dan biaya kuliah dalam hitungan detik. Antarmuka yang bersih dan dioptimalkan penuh untuk kecepatan akses.
                 </p>
               </div>
 
               {/* Transaction Micro-mockup */}
-              <div className="bg-slate-950 text-white p-5 rounded-3xl border border-slate-800 shadow-2xl text-xs space-y-3 w-full max-w-[250px] shrink-0 transform group-hover:scale-105 transition-transform duration-300">
+              <div className="bg-slate-950 text-white p-5 rounded-3xl border border-slate-800 shadow-2xl text-xs space-y-3 w-full max-w-[250px] shrink-0 transform group-hover:scale-105 transition-transform duration-300 self-center sm:self-auto">
                 <div className="flex justify-between items-center pb-2 border-b border-slate-800">
                   <span className="font-extrabold text-[9px] text-slate-500 uppercase tracking-widest">Catatan Kilat</span>
                   <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -353,15 +355,15 @@ export default function HomePage() {
             </div>
 
             {/* Bento Card 2: Tetap Sesuai Anggaran */}
-            <div className="group overflow-hidden rounded-[32px] border border-slate-200 bg-white/50 p-8 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-glow hover:border-emerald-500/25 flex flex-col justify-between gap-6">
+            <div className="group overflow-hidden rounded-[24px] sm:rounded-[32px] border border-slate-200 bg-white/50 p-6 sm:p-8 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-glow hover:border-emerald-500/25 flex flex-col justify-between gap-6">
               <div>
                 <div className="mb-5 inline-flex rounded-2xl p-3 border shadow-sm transition-all duration-300 group-hover:scale-110 text-amber-600 bg-amber-50 border-amber-100/80 dark:bg-amber-950/20 dark:border-amber-900/30">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-950 group-hover:text-amber-600 transition-colors">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-950 group-hover:text-amber-600 transition-colors">
                   Tetap Sesuai Anggaran
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-500 font-medium">
+                <p className="mt-3 text-xs sm:text-sm leading-relaxed text-slate-500 font-medium">
                   Atur batasan belanja bulanan per kategori dan terima notifikasi peringatan sebelum Anda melewati batas aman.
                 </p>
               </div>
@@ -383,15 +385,15 @@ export default function HomePage() {
             </div>
 
             {/* Bento Card 3: Bangun Kebiasaan Menabung */}
-            <div className="group overflow-hidden rounded-[32px] border border-slate-200 bg-white/50 p-8 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-glow hover:border-emerald-500/25 flex flex-col justify-between gap-6">
+            <div className="group overflow-hidden rounded-[24px] sm:rounded-[32px] border border-slate-200 bg-white/50 p-6 sm:p-8 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-glow hover:border-emerald-500/25 flex flex-col justify-between gap-6">
               <div>
                 <div className="mb-5 inline-flex rounded-2xl p-3 border shadow-sm transition-all duration-300 group-hover:scale-110 text-sky-600 bg-sky-50 border-sky-100/80 dark:bg-sky-950/20 dark:border-sky-900/30">
                   <Target className="h-5 w-5" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-950 group-hover:text-sky-600 transition-colors">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-950 group-hover:text-sky-600 transition-colors">
                   Kebiasaan Menabung
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-500 font-medium">
+                <p className="mt-3 text-xs sm:text-sm leading-relaxed text-slate-500 font-medium">
                   Miliki target impian (gadget, liburan, magang) dan biarkan sistem menghitung rencana kontribusi harian/mingguan yang realistis.
                 </p>
               </div>
@@ -418,21 +420,21 @@ export default function HomePage() {
             </div>
 
             {/* Bento Card 4: Pahami Keuangan Anda */}
-            <div className="md:col-span-2 group overflow-hidden rounded-[32px] border border-slate-200 bg-white/50 p-8 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-glow hover:border-emerald-500/25 flex flex-col sm:flex-row justify-between gap-6 items-center">
+            <div className="md:col-span-2 group overflow-hidden rounded-[24px] sm:rounded-[32px] border border-slate-200 bg-white/50 p-6 sm:p-8 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-glow hover:border-emerald-500/25 flex flex-col sm:flex-row justify-between gap-6 items-start sm:items-center">
               <div className="max-w-sm">
                 <div className="mb-5 inline-flex rounded-2xl p-3 border shadow-sm transition-all duration-300 group-hover:scale-110 text-indigo-600 bg-indigo-50 border-indigo-100/80 dark:bg-indigo-950/20 dark:border-indigo-900/30">
                   <TrendingUp className="h-5 w-5" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-950 group-hover:text-indigo-700 transition-colors">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-950 group-hover:text-indigo-700 transition-colors">
                   Analisis Finansial Cerdas
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-500 font-medium">
+                <p className="mt-3 text-xs sm:text-sm leading-relaxed text-slate-500 font-medium">
                   Grafik analitik dan skor kesehatan finansial yang dihitung berdasarkan kedisiplinan berbelanja serta konsistensi tabungan Anda.
                 </p>
               </div>
 
               {/* Chart Micro-mockup */}
-              <div className="bg-slate-950 text-white p-5 rounded-3xl border border-slate-800 shadow-2xl text-xs space-y-3.5 w-full max-w-[250px] shrink-0 transform group-hover:scale-105 transition-transform duration-300">
+              <div className="bg-slate-950 text-white p-5 rounded-3xl border border-slate-800 shadow-2xl text-xs space-y-3.5 w-full max-w-[250px] shrink-0 transform group-hover:scale-105 transition-transform duration-300 self-center sm:self-auto">
                 <div className="flex justify-between items-center">
                   <span className="font-extrabold text-[9px] text-slate-500 uppercase tracking-widest">Tren Kas Kampus</span>
                   <span className="text-[9px] text-emerald-400 font-bold">+18.5%</span>
@@ -456,62 +458,62 @@ export default function HomePage() {
         </section>
 
         {/* Timeline Stepper */}
-        <section className="py-20 md:py-28 bg-slate-950 text-white rounded-[48px] px-6 md:px-12 my-8 relative overflow-hidden shadow-2xl border border-slate-900">
+        <section className="py-12 sm:py-20 md:py-28 bg-slate-950 text-white rounded-[24px] sm:rounded-[48px] px-4 py-10 sm:px-12 my-8 relative overflow-hidden shadow-2xl border border-slate-900">
           <div className="absolute top-[-10%] right-[-10%] w-[350px] h-[350px] rounded-full bg-emerald-500/10 blur-[90px]" />
           <div className="absolute bottom-[-10%] left-[-10%] w-[300px] h-[300px] rounded-full bg-teal-500/10 blur-[80px]" />
           
-          <div className="text-center max-w-2xl mx-auto mb-16 relative z-10">
-            <h2 className="text-4xl font-extrabold tracking-tight">
+          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 relative z-10">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
               Tiga Langkah Sederhana untuk Mulai
             </h2>
-            <p className="mt-4 text-slate-400 font-medium">
+            <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-slate-400 font-medium">
               Tidak membutuhkan sinkronisasi bank yang ribet. BudgedIn menjaga privasi dan keamanan data finansial Anda sepenuhnya.
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3 relative z-10">
+          <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-3 relative z-10">
             {steps.map((item) => (
-              <div key={item.step} className="bg-slate-900/60 border border-slate-800/80 rounded-3xl p-6 relative group transition-all duration-300 hover:border-emerald-500/20">
-                <div className="text-6xl font-black text-emerald-500/10 mb-4 group-hover:text-emerald-500/30 transition-colors duration-300 leading-none">
+              <div key={item.step} className="bg-slate-900/60 border border-slate-800/80 rounded-2xl sm:rounded-3xl p-5 sm:p-6 relative group transition-all duration-300 hover:border-emerald-500/20">
+                <div className="text-5xl sm:text-6xl font-black text-emerald-500/10 mb-4 group-hover:text-emerald-500/30 transition-colors duration-300 leading-none">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-white">{item.title}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed font-medium">{item.description}</p>
+                <h3 className="text-lg sm:text-xl font-bold mb-2 text-white">{item.title}</h3>
+                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-medium">{item.description}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* Testimonials */}
-        <section className="py-20 md:py-28">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-4xl font-extrabold tracking-tight text-slate-900">
+        <section className="py-12 sm:py-20 md:py-28">
+          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900">
               Ulasan Teman Mahasiswa
             </h2>
-            <p className="mt-4 text-slate-500 font-medium">
+            <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-slate-500 font-medium">
               Bagaimana rekan-rekan mahasiswa menyehatkan finansial mereka dan meraih target impian dengan BudgedIn.
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-3">
             {testimonials.map((t) => (
               <Card key={t.name} className="border-slate-200/60 bg-white/70 shadow-soft relative transition-all duration-300 hover:shadow-md backdrop-blur-sm">
-                <CardContent className="p-6 flex flex-col justify-between h-full">
+                <CardContent className="p-5 sm:p-6 flex flex-col justify-between h-full">
                   <div>
                     <div className="flex gap-1 text-amber-400 mb-4">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="h-4 w-4 fill-current" />
                       ))}
                     </div>
-                    <p className="text-slate-600 text-sm leading-relaxed italic mb-6 font-medium">
+                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed italic mb-6 font-medium">
                       &ldquo;{t.text}&rdquo;
                     </p>
                   </div>
                   <div className="flex items-center gap-3 border-t border-slate-100 pt-4">
-                    <img src={t.avatar} alt={t.name} className="w-10 h-10 rounded-full object-cover shadow-sm bg-slate-100" />
+                    <img src={t.avatar} alt={t.name} className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-sm bg-slate-100" />
                     <div>
-                      <h4 className="font-bold text-slate-950 text-sm">{t.name}</h4>
-                      <p className="text-xs text-slate-400 font-semibold">{t.role}</p>
+                      <h4 className="font-bold text-slate-950 text-xs sm:text-sm">{t.name}</h4>
+                      <p className="text-[10px] sm:text-xs text-slate-400 font-semibold">{t.role}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -521,22 +523,22 @@ export default function HomePage() {
         </section>
 
         {/* Premium Mesh Gradient CTA Banner */}
-        <section className="py-16 md:py-20 bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-600 text-white rounded-[48px] shadow-xl relative overflow-hidden mb-12 border border-emerald-400/25">
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-600 text-white rounded-[24px] sm:rounded-[48px] shadow-xl relative overflow-hidden mb-12 border border-emerald-400/25 px-4 sm:px-6">
           <div className="absolute -left-20 -bottom-20 w-72 h-72 rounded-full bg-white/5 blur-2xl pointer-events-none" />
           <div className="absolute right-[-5%] top-[-5%] w-96 h-96 rounded-full bg-white/10 blur-3xl pointer-events-none" />
           
-          <div className="text-center max-w-3xl mx-auto px-6 relative z-10">
-            <Badge className="bg-white/20 text-white border-0 px-4 py-1 mb-6 rounded-full text-xs font-semibold backdrop-blur-sm">
+          <div className="text-center max-w-3xl mx-auto relative z-10">
+            <Badge className="bg-white/20 text-white border-0 px-3 py-1 sm:px-4 sm:py-1 mb-6 rounded-full text-[10px] sm:text-xs font-semibold backdrop-blur-sm">
               ✨ 100% Gratis & Bebas Iklan Selamanya
             </Badge>
-            <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight leading-snug sm:leading-tight">
               Siap Mengatur Keuangan Lebih Cermat?
             </h2>
-            <p className="mt-4 text-emerald-50 max-w-lg mx-auto text-base leading-relaxed font-medium">
+            <p className="mt-3 sm:mt-4 text-emerald-50 max-w-lg mx-auto text-xs sm:text-base leading-relaxed font-medium">
               Bergabunglah bersama ribuan mahasiswa hebat lainnya untuk wujudkan finansial yang stabil dan teratur.
             </p>
-            <div className="mt-8 flex justify-center gap-4">
-              <Button asChild size="lg" className="rounded-full bg-white text-emerald-700 hover:bg-slate-50 font-bold px-8 shadow-lg transition-all hover:scale-105 active:scale-95 border-0">
+            <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+              <Button asChild size="lg" className="w-full sm:w-auto rounded-full bg-white text-emerald-700 hover:bg-slate-50 font-bold px-8 py-3 sm:py-4 shadow-lg transition-all hover:scale-102 sm:hover:scale-105 active:scale-98 sm:active:scale-95 border-0 justify-center text-sm sm:text-base">
                 <Link href="/register">Buat Akun Gratis</Link>
               </Button>
             </div>
@@ -544,13 +546,16 @@ export default function HomePage() {
         </section>
 
         {/* Footer */}
-        <footer className="border-t border-slate-200/60 pt-8 pb-12 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400 font-medium">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full overflow-hidden border border-slate-200 bg-white">
-              <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
+        <footer className="border-t border-slate-200/60 pt-8 pb-12 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400 font-medium text-center sm:text-left">
+          <div className="flex flex-col sm:flex-row items-center gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full overflow-hidden border border-slate-200 bg-white">
+                <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
+              </div>
+              <span className="font-extrabold text-slate-800 text-sm">BudgedIn</span>
             </div>
-            <span className="font-extrabold text-slate-800 text-sm">BudgedIn</span>
-            <span>•  Manajemen Keuangan Mahasiswa</span>
+            <span className="hidden sm:inline">•</span>
+            <span>Manajemen Keuangan Mahasiswa</span>
           </div>
           <p>© {new Date().getFullYear()} BudgedIn. Dibuat dengan penuh dedikasi untuk menyukseskan mahasiswa.</p>
         </footer>
