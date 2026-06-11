@@ -8,4 +8,6 @@ profileRouter.get('/me', profileController.me);
 profileRouter.get('/avatar-upload-url', profileController.avatarUploadUrl);
 profileRouter.put('/me', profileController.upsert);
 profileRouter.patch('/me', profileController.update);
+profileRouter.delete('/reset-data', profileController.resetData);
+
 

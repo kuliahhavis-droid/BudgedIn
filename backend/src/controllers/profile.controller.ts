@@ -27,6 +27,11 @@ export const profileController = {
       success: true,
       data: { signedUrl, publicUrl }
     });
+  }),
+  resetData: asyncHandler(async (req, res) => {
+    await profileService.resetData(req.user!.id);
+    res.json({ success: true, message: 'All financial data has been reset successfully.' });
   })
 };
+
 

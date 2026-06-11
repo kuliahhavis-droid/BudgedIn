@@ -3,8 +3,10 @@ import { profileRepository, type ProfileInput, type ProfileUpdateInput } from '.
 export const profileService = {
   get: profileRepository.get,
   upsert: profileRepository.upsert,
-  update: profileRepository.update
+  update: profileRepository.update,
+  resetData: profileRepository.resetData
 };
+
 
 export type { ProfileInput, ProfileUpdateInput };
 

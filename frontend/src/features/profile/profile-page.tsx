@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Camera, Save, User as UserIcon, Lock, Upload, Loader2 } from 'lucide-react';
+import { Camera, Save, User as UserIcon, Lock, Upload, Loader2, AlertTriangle, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -14,9 +14,10 @@ import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 
 import { useAuthStore } from '@/stores/auth-store';
-import { useUpdateProfile, useUploadAvatar } from '@/hooks/use-profile';
+import { useUpdateProfile, useUploadAvatar, useResetData } from '@/hooks/use-profile';
 
 const profileSchema = z.object({
   fullName: z.string().min(2, 'Nama lengkap minimal 2 karakter'),
@@ -42,6 +43,20 @@ export function ProfilePage() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmText, setConfirmText] = useState('');
+  const { mutate: resetData, isPending: isResetting } = useResetData();
+
+  const handleResetData = () => {
+    if (confirmText !== 'RESET DATA') return;
+    resetData(undefined, {
+      onSuccess: () => {
+        setIsConfirmOpen(false);
+        setConfirmText('');
+      }
+    });
+  };
 
   const profileForm = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -188,9 +203,10 @@ export function ProfilePage() {
 
         <div className="md:col-span-2">
           <Tabs defaultValue="general" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="general">Umum</TabsTrigger>
               <TabsTrigger value="security">Keamanan</TabsTrigger>
+              <TabsTrigger value="danger">Zona Bahaya</TabsTrigger>
             </TabsList>
             
             <TabsContent value="general" className="mt-4">
@@ -284,9 +300,94 @@ export function ProfilePage() {
                 </form>
               </Card>
             </TabsContent>
+
+            <TabsContent value="danger" className="mt-4">
+              <Card className="rounded-3xl shadow-soft border border-red-100">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-xl text-red-600">
+                    <AlertTriangle className="h-5 w-5" />
+                    Zona Bahaya
+                  </CardTitle>
+                  <CardDescription>
+                    Tindakan di bawah ini bersifat permanen dan tidak dapat dibatalkan.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="rounded-2xl bg-red-50 p-4 border border-red-100">
+                    <h4 className="font-semibold text-red-800 text-sm mb-1">Mereset Data Keuangan</h4>
+                    <p className="text-xs text-red-700 leading-relaxed">
+                      Ini akan menghapus seluruh catatan transaksi keuangan Anda, setelan anggaran bulanan, target tabungan, dan semua notifikasi yang tersimpan di sistem kami.
+                    </p>
+                  </div>
+                  <p className="text-sm text-slate-600">
+                    Akun profil Anda (Nama, Email, dan Kata Sandi) akan tetap dipertahankan sehingga Anda tidak perlu mendaftar ulang.
+                  </p>
+                </CardContent>
+                <CardFooter className="flex justify-end">
+                  <Button 
+                    type="button" 
+                    variant="danger"
+                    className="bg-red-500 hover:bg-red-600 text-white rounded-xl"
+                    onClick={() => setIsConfirmOpen(true)}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Reset Semua Data Keuangan
+                  </Button>
+                </CardFooter>
+              </Card>
+            </TabsContent>
           </Tabs>
         </div>
       </div>
+
+      <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
+        <DialogContent maxWidth="md">
+          <DialogHeader>
+            <DialogTitle className="text-red-600 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5" />
+              Mereset Seluruh Data Keuangan?
+            </DialogTitle>
+            <DialogDescription className="mt-2 text-sm text-slate-500">
+              Tindakan ini akan menghapus semua riwayat transaksi, anggaran bulanan, target tabungan, dan notifikasi Anda secara **permanen** dan tidak dapat dibatalkan.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="p-6 pt-0 space-y-4">
+            <p className="text-xs text-slate-600">
+              Silakan ketik <span className="font-semibold text-slate-900 select-all">RESET DATA</span> di bawah ini untuk mengonfirmasi tindakan Anda:
+            </p>
+            <Input
+              value={confirmText}
+              onChange={(e) => setConfirmText(e.target.value)}
+              placeholder="RESET DATA"
+              className="border-slate-200 focus:border-red-500 focus:ring-red-200"
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setIsConfirmOpen(false);
+                setConfirmText('');
+              }}
+              disabled={isResetting}
+            >
+              Batal
+            </Button>
+            <Button
+              variant="danger"
+              disabled={confirmText !== 'RESET DATA' || isResetting}
+              onClick={handleResetData}
+            >
+              {isResetting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Trash2 className="mr-2 h-4 w-4" />
+              )}
+              Hapus Sekarang
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

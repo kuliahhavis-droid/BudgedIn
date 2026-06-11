@@ -56,3 +56,19 @@ export function useChangePassword() {
     },
   });
 }
+
+export function useResetData() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => profileService.resetData(),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      toast.success('Semua data keuangan Anda berhasil direset.');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || 'Gagal mereset data keuangan.');
+    },
+  });
+}
+

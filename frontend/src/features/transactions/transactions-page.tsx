@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react'
 import {
   Plus, Search, Filter, Pencil, Trash2, ArrowUpRight, ArrowDownRight, MoreVertical,
-  Utensils, Car, Home, GraduationCap, Gamepad2, ShoppingBag, Wifi, Coins, Laptop, Heart, HelpCircle, Download,
-  Camera, Loader2
+  Utensils, Car, Home, GraduationCap, Gamepad2, ShoppingBag, Wifi, Coins, Laptop, Heart, HelpCircle, Download
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
@@ -101,93 +100,6 @@ export function TransactionsPage() {
 
   const selectedType = watch('type')
 
-  const [isScanning, setIsScanning] = useState(false)
-  const [isScanningAI, setIsScanningAI] = useState(false)
-
-  const handleScanReceipt = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    setIsScanning(true)
-    const toastId = toast.loading('Sedang memproses struk belanja Anda...')
-
-    try {
-      const { scanReceipt } = await import('@/lib/ocr')
-      const data = await scanReceipt(file)
-
-      setValue('title', data.merchantName)
-      setValue('amount', data.amount)
-      setValue('transactionDate', data.transactionDate)
-
-      toast.success('Struk berhasil dipindai! Silakan tinjau data.', { id: toastId })
-    } catch (err: any) {
-      console.error(err)
-      toast.error(err.message || 'Gagal memproses struk. Silakan isi manual.', { id: toastId })
-    } finally {
-      setIsScanning(false)
-      e.target.value = ''
-    }
-  }
-
-  const handleAIScanReceipt = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    // Buka dialog tambah transaksi & set loading scanning
-    setSelectedId(null)
-    reset({
-      title: '',
-      description: '',
-      amount: 0,
-      type: 'expense',
-      category: '',
-      transactionDate: new Date().toISOString().split('T')[0],
-    })
-    setIsDialogOpen(true)
-    setIsScanningAI(true)
-
-    const toastId = toast.loading('Mengonversi gambar struk...')
-
-    try {
-      // Baca file ke Base64
-      const base64Data = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => resolve(reader.result as string)
-        reader.onerror = (err) => reject(err)
-      })
-
-      toast.loading('Menganalisis struk dengan Gemini AI...', { id: toastId })
-
-      const { apiPost } = await import('@/services/api')
-      const response = await apiPost<{
-        merchantName: string;
-        amount: number;
-        transactionDate: string;
-        type: 'income' | 'expense';
-        category: string;
-      }>('/transactions/scan-receipt', { image: base64Data })
-
-      if (response.success && response.data) {
-        const { merchantName, amount, transactionDate, type, category } = response.data
-        setValue('title', merchantName)
-        setValue('amount', amount)
-        setValue('transactionDate', transactionDate)
-        setValue('type', type)
-        setValue('category', category)
-        toast.success('Pindai Gemini AI sukses! Silakan tinjau data.', { id: toastId })
-      } else {
-        toast.error('Gagal mengekstrak data dari AI.', { id: toastId })
-      }
-    } catch (err: any) {
-      console.error(err)
-      toast.error(err.message || 'Gagal terhubung dengan server AI.', { id: toastId })
-    } finally {
-      setIsScanningAI(false)
-      e.target.value = ''
-    }
-  }
-
   const handleOpenCreate = () => {
     setSelectedId(null)
     reset({
@@ -244,10 +156,10 @@ export function TransactionsPage() {
   const handleExportCSV = () => {
     try {
       if (transactions.length === 0) {
-        toast.error('Tidak ada transaksi untuk diekspor');
-        return;
+        toast.error('Tidak ada transaksi untuk diekspor')
+        return
       }
-      const headers = ['Tanggal', 'Judul', 'Tipe', 'Kategori', 'Jumlah', 'Catatan'];
+      const headers = ['Tanggal', 'Judul', 'Tipe', 'Kategori', 'Jumlah', 'Catatan']
       const rows = (transactions as any[]).map(tx => [
         tx.transactionDate ? format(new Date(tx.transactionDate), 'yyyy-MM-dd') : '',
         tx.title,
@@ -255,18 +167,18 @@ export function TransactionsPage() {
         tx.category,
         tx.amount,
         tx.description || ''
-      ]);
-      const csvContent = [headers.join(','), ...rows.map(e => e.map(val => `"${val}"`).join(','))].join('\n');
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `budgedin-transaksi-${format(new Date(), 'yyyy-MM-dd')}.csv`;
-      link.click();
-      toast.success('Transaksi sukses diekspor ke CSV');
+      ])
+      const csvContent = [headers.join(','), ...rows.map(e => e.map(val => `"${val}"`).join(','))].join('\n')
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.download = `budgedin-transaksi-${format(new Date(), 'yyyy-MM-dd')}.csv`
+      link.click()
+      toast.success('Transaksi sukses diekspor ke CSV')
     } catch (e) {
-      toast.error('Gagal mengekspor CSV');
+      toast.error('Gagal mengekspor CSV')
     }
-  };
+  }
 
   const categories = selectedType === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES
 
@@ -275,64 +187,35 @@ export function TransactionsPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-3xl font-bold tracking-tight">Transaksi</h1>
         <div className="flex gap-2 w-full sm:w-auto">
-          <Button variant="outline" onClick={handleExportCSV} className="rounded-full shadow-soft flex-1 sm:flex-initial">
+          <Button variant="outline" onClick={handleExportCSV} className="rounded-full shadow-soft flex-1 sm:flex-initial text-xs sm:text-sm h-10 px-4">
             <Download className="mr-2 h-4 w-4" /> Ekspor CSV
           </Button>
 
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            className="hidden"
-            id="ai-receipt-upload"
-            onChange={handleAIScanReceipt}
-            disabled={isScanningAI}
-          />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => document.getElementById('ai-receipt-upload')?.click()}
-            className="rounded-full shadow-soft flex-1 sm:flex-initial border-emerald-200 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400"
-            disabled={isScanningAI}
-          >
-            {isScanningAI ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin text-emerald-500" />
-                Memindai...
-              </>
-            ) : (
-              <>
-                <Camera className="mr-2 h-4 w-4 text-emerald-500" />
-                Scan dengan AI
-              </>
-            )}
-          </Button>
-
-          <Button onClick={handleOpenCreate} className="bg-green-500 hover:bg-green-600 text-white rounded-full shadow-soft flex-1 sm:flex-initial">
+          <Button onClick={handleOpenCreate} className="bg-green-500 hover:bg-green-600 text-white rounded-full shadow-soft flex-1 sm:flex-initial text-xs sm:text-sm h-10 px-4">
             <Plus className="mr-2 h-4 w-4" /> Tambah Transaksi
           </Button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 items-center bg-white/50 backdrop-blur-sm p-4 rounded-3xl shadow-sm border border-white/20">
-        <div className="relative w-full sm:w-auto flex-1">
+      <div className="flex flex-row gap-3 items-center bg-white/50 backdrop-blur-sm p-3 sm:p-4 rounded-3xl shadow-sm border border-white/20">
+        <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Cari transaksi..."
-            className="pl-9 rounded-full bg-white/80"
+            className="pl-9 rounded-full bg-white/80 h-9 sm:h-10 text-xs sm:text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         <Select value={typeFilter} onValueChange={setTypeFilter}>
-          <SelectTrigger className="w-full sm:w-[150px] rounded-full bg-white/80">
+          <SelectTrigger className="w-[115px] sm:w-[150px] rounded-full bg-white/80 h-9 sm:h-10 text-xs sm:text-sm flex-shrink-0">
             <SelectValue placeholder="Tipe" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Semua Tipe</SelectItem>
-            <SelectItem value="income">Pemasukan</SelectItem>
-            <SelectItem value="expense">Pengeluaran</SelectItem>
+            <SelectItem value="all" className="text-xs sm:text-sm">Semua</SelectItem>
+            <SelectItem value="income" className="text-xs sm:text-sm">Pemasukan</SelectItem>
+            <SelectItem value="expense" className="text-xs sm:text-sm">Pengeluaran</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -361,12 +244,12 @@ export function TransactionsPage() {
               const Icon = config.icon
               return (
                 <div key={tx.id} className="p-4 flex items-center justify-between hover:bg-muted/50 transition-colors">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                     <div className={cn(
-                      "p-3 rounded-2xl flex-shrink-0 relative",
+                      "p-2.5 sm:p-3 rounded-2xl flex-shrink-0 relative",
                       config.bg, config.text
                     )}>
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                       <span className={cn(
                         "absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-[9px] text-white border border-white font-bold",
                         tx.type === 'income' ? "bg-green-500" : "bg-red-500"
@@ -374,30 +257,30 @@ export function TransactionsPage() {
                         {tx.type === 'income' ? '+' : '-'}
                       </span>
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 dark:text-slate-100">
+                    <div className="min-w-0">
+                      <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-sm sm:text-base truncate">
                         {tx.title}
                       </h4>
-                      <div className="flex items-center text-sm text-muted-foreground gap-2">
+                      <div className="flex items-center text-[10px] sm:text-sm text-muted-foreground gap-1.5 sm:gap-2">
                         <span>{tx.category}</span>
                         <span>•</span>
                         <span>{tx.transactionDate ? format(new Date(tx.transactionDate), 'd MMM yyyy', { locale: id }) : ''}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2.5 sm:gap-4 flex-shrink-0">
                     <div className={cn(
-                      "font-semibold text-right",
+                      "font-semibold text-right text-xs sm:text-base",
                       tx.type === 'income' ? "text-green-600" : "text-gray-900"
                     )}>
                       <div>{tx.type === 'income' ? '+' : '-'}{Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Number(tx.amount))}</div>
-                      <div className="text-xs font-normal opacity-70 capitalize">{tx.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}</div>
+                      <div className="text-[9px] sm:text-xs font-normal opacity-70 capitalize">{tx.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}</div>
                     </div>
-                    <div className="flex gap-1">
-                      <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 h-8 w-8" onClick={() => handleOpenEdit(tx)}>
+                    <div className="flex gap-0.5 sm:gap-1">
+                      <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 h-7 w-7 sm:h-8 sm:w-8" onClick={() => handleOpenEdit(tx)}>
                         <Pencil className="h-3.5 w-3.5" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="rounded-full hover:bg-red-50 text-red-500 h-8 w-8" onClick={() => handleOpenDelete(tx)}>
+                      <Button variant="ghost" size="icon" className="rounded-full hover:bg-red-50 text-red-500 h-7 w-7 sm:h-8 sm:w-8" onClick={() => handleOpenDelete(tx)}>
                         <Trash2 className="h-3.5 w-3.5" />
                       </Button>
                     </div>
@@ -412,69 +295,11 @@ export function TransactionsPage() {
       {/* Form Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent maxWidth="md">
-          {/* Gemini AI Scanning Glassmorphism Overlay */}
-          {isScanningAI && (
-            <div className="absolute inset-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-50 flex flex-col items-center justify-center gap-4 rounded-3xl animate-fade-in select-none">
-              <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 relative overflow-hidden shadow-inner">
-                {/* Glowing ring */}
-                <div className="absolute inset-0 border-2 border-emerald-500 rounded-3xl animate-ping opacity-45" />
-                <Camera className="h-9 w-9 animate-pulse" />
-              </div>
-              <div className="text-center space-y-1">
-                <h4 className="font-bold text-lg text-slate-800 dark:text-slate-100 tracking-tight">Gemini AI Sedang Memindai...</h4>
-                <p className="text-xs text-muted-foreground max-w-[280px] leading-relaxed">
-                  Kami sedang mengekstrak nama merchant, total nominal, tanggal, dan kategori dari struk Anda secara otomatis.
-                </p>
-              </div>
-              {/* Animated laser line */}
-              <div className="w-[80%] h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent relative overflow-hidden mt-2">
-                <div className="absolute inset-0 bg-emerald-400 w-1/3 animate-shimmer animate-pulse" />
-              </div>
-            </div>
-          )}
-
           <DialogHeader>
             <DialogTitle>{selectedId ? 'Edit Transaksi' : 'Tambah Transaksi'}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-6 pb-2">
-            {/* Scan Receipt Section */}
-            {!selectedId && (
-              <div className="bg-slate-50 dark:bg-slate-900/40 p-4 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center gap-2">
-                <p className="text-xs text-muted-foreground">Malas mengetik? Pindai struk/nota belanja Anda secara lokal.</p>
-                <input
-                  type="file"
-                  accept="image/*"
-                  capture="environment"
-                  className="hidden"
-                  id="receipt-upload"
-                  onChange={handleScanReceipt}
-                  disabled={isScanning}
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  className={cn(
-                    "rounded-full bg-white dark:bg-slate-950 shadow-sm border border-slate-200",
-                    isScanning && "opacity-70 pointer-events-none"
-                  )}
-                  disabled={isScanning}
-                  onClick={() => document.getElementById('receipt-upload')?.click()}
-                >
-                  {isScanning ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin text-green-500" />
-                      Memindai Struk...
-                    </>
-                  ) : (
-                    <>
-                      <Camera className="mr-2 h-4 w-4 text-green-500" />
-                      Pindai Struk / Nota
-                    </>
-                  )}
-                </Button>
-              </div>
-            )}
-
+            
             {/* Title */}
             <div>
               <label className="text-sm font-medium text-slate-700 block mb-1.5">Judul</label>

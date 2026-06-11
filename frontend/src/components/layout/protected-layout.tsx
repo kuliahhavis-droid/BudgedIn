@@ -108,7 +108,7 @@ export function ProtectedLayout({ children }: { children: React.ReactNode }) {
     : 'U';
 
   return (
-    <div className="flex h-[100dvh] overflow-hidden bg-background">
+    <div className="fixed inset-0 flex overflow-hidden bg-background">
       {/* Desktop Sidebar */}
       <aside className="hidden w-64 flex-shrink-0 flex-col border-r border-border bg-white md:flex">
         {/* Logo */}
@@ -226,9 +226,9 @@ export function ProtectedLayout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Main content area */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden relative">
         {/* Header */}
-        <header className="flex h-16 flex-shrink-0 items-center justify-between border-b border-border bg-white/80 px-4 backdrop-blur-sm md:px-6">
+        <header className="sticky top-0 z-30 flex h-16 flex-shrink-0 items-center justify-between border-b border-border bg-white/80 px-4 backdrop-blur-sm md:px-6">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -272,12 +272,12 @@ export function ProtectedLayout({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto bg-background p-4 scrollbar-thin md:p-6">
+        <main className="flex-1 overflow-y-auto bg-background p-4 pb-6 md:pb-6 scrollbar-thin md:p-6">
           <div className="mx-auto max-w-7xl animate-fade-in">{children}</div>
         </main>
 
         {/* Mobile Bottom Nav */}
-        <nav className="relative flex h-20 flex-shrink-0 items-end justify-around border-t border-slate-100 bg-white/95 pb-safe backdrop-blur-md md:hidden shadow-lg">
+        <nav className="relative z-40 flex h-20 flex-shrink-0 items-end justify-around border-t border-slate-100 bg-white/95 pb-safe backdrop-blur-md md:hidden shadow-lg">
           {/* Transaksi */}
           <Link
             href="/transactions"

@@ -1,4 +1,4 @@
-import { apiGet, apiPatch } from './api';
+import { apiGet, apiPatch, apiDelete } from './api';
 import { supabase } from '../lib/supabase';
 import type { Profile, UpdateProfileInput } from '../types';
 
@@ -12,6 +12,12 @@ export const profileService = {
     const response = await apiPatch<Profile>('/profile/me', data);
     return response.data;
   },
+
+  resetData: async () => {
+    const response = await apiDelete<void>('/profile/reset-data');
+    return response.data;
+  },
+
 
   uploadAvatar: async (file: File) => {
     const { data: sessionData } = await supabase.auth.getSession();
