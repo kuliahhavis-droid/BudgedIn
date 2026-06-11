@@ -272,7 +272,7 @@ export function ProtectedLayout({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto bg-background p-4 pb-6 md:pb-6 scrollbar-thin md:p-6">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain bg-background p-4 pb-6 md:pb-6 scrollbar-thin md:p-6">
           <div className="mx-auto max-w-7xl animate-fade-in">{children}</div>
         </main>
 
