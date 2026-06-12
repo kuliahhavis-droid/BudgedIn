@@ -403,14 +403,14 @@ export function AiAssistantPage() {
   ];
 
   return (
-    <div className="flex flex-col h-[calc(100vh-120px)] max-h-[800px] gap-4">
+    <div className="flex flex-col h-[calc(100dvh-185px)] md:h-[calc(100vh-120px)] max-h-[800px] gap-3 md:gap-4">
       {/* Header */}
-      <div className="flex flex-col gap-1 shrink-0">
-        <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-          <Sparkles className="h-7 w-7 text-emerald-500 animate-pulse" />
+      <div className="flex flex-col gap-1 shrink-0 px-1">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2 text-slate-900">
+          <Sparkles className="h-6 w-6 sm:h-7 sm:h-7 text-emerald-500 animate-pulse" />
           Asisten AI BudgedIn
         </h1>
-        <p className="text-muted-foreground text-sm">
+        <p className="hidden sm:block text-muted-foreground text-sm">
           Konsultasi keuangan dan catat transaksi cerdas secara langsung lewat chat.
         </p>
       </div>

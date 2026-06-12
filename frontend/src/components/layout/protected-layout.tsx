@@ -277,69 +277,87 @@ export function ProtectedLayout({ children }: { children: React.ReactNode }) {
         </main>
 
         {/* Mobile Bottom Nav */}
-        <nav className="relative z-40 flex h-20 flex-shrink-0 items-end justify-around border-t border-slate-100 bg-white/95 pb-safe backdrop-blur-md md:hidden shadow-lg">
+        <nav className="relative z-40 flex h-20 flex-shrink-0 items-center justify-around border-t border-slate-100 bg-white/95 pb-safe backdrop-blur-md md:hidden shadow-lg">
+          {/* Dashboard */}
+          <Link
+            href="/dashboard"
+            className={cn(
+              'flex flex-1 flex-col items-center justify-center py-2 transition-all duration-300 relative',
+              pathname === '/dashboard' ? 'text-primary font-semibold scale-105' : 'text-slate-400 hover:text-slate-600'
+            )}
+          >
+            <Home className="h-5 w-5 mb-0.5" />
+            <span className="text-[10px]">Dashboard</span>
+            {pathname === '/dashboard' && (
+              <span className="absolute bottom-1 h-1 w-1 rounded-full bg-primary" />
+            )}
+          </Link>
+
           {/* Transaksi */}
           <Link
             href="/transactions"
             className={cn(
-              'flex flex-1 flex-col items-center justify-center py-2 transition-all duration-300',
+              'flex flex-1 flex-col items-center justify-center py-2 transition-all duration-300 relative',
               pathname.startsWith('/transactions') ? 'text-primary font-semibold scale-105' : 'text-slate-400 hover:text-slate-600'
             )}
           >
-            <ArrowLeftRight className="h-5 w-5 mb-1" />
+            <ArrowLeftRight className="h-5 w-5 mb-0.5" />
             <span className="text-[10px]">Transaksi</span>
+            {pathname.startsWith('/transactions') && (
+              <span className="absolute bottom-1 h-1 w-1 rounded-full bg-primary" />
+            )}
+          </Link>
+
+          {/* Asisten AI Center Button (Inline, Refined) */}
+          <Link
+            href="/ai-assistant"
+            className={cn(
+              'flex flex-1 flex-col items-center justify-center py-1 transition-all duration-300 relative',
+              pathname.startsWith('/ai-assistant') ? 'text-primary font-semibold' : 'text-slate-400 hover:text-slate-600'
+            )}
+          >
+            <div className={cn(
+              'flex h-11 w-11 items-center justify-center rounded-2xl transition-all duration-300 border-2',
+              pathname.startsWith('/ai-assistant') 
+                ? 'bg-emerald-600 border-white text-white scale-105 shadow-md shadow-emerald-600/20' 
+                : 'bg-emerald-50/60 border-emerald-500/15 text-emerald-600 hover:bg-emerald-50'
+            )}>
+              <Bot className={cn("h-5.5 w-5.5", pathname.startsWith('/ai-assistant') ? "animate-bounce" : "animate-pulse")} />
+            </div>
+            <span className="text-[9px] mt-1 font-bold">Asisten AI</span>
+            {pathname.startsWith('/ai-assistant') && (
+              <span className="absolute bottom-1 h-1 w-1 rounded-full bg-primary animate-fade-in" />
+            )}
           </Link>
 
           {/* Anggaran */}
           <Link
             href="/budgets"
             className={cn(
-              'flex flex-1 flex-col items-center justify-center py-2 transition-all duration-300',
+              'flex flex-1 flex-col items-center justify-center py-2 transition-all duration-300 relative',
               pathname.startsWith('/budgets') ? 'text-primary font-semibold scale-105' : 'text-slate-400 hover:text-slate-600'
             )}
           >
-            <Wallet className="h-5 w-5 mb-1" />
+            <Wallet className="h-5 w-5 mb-0.5" />
             <span className="text-[10px]">Anggaran</span>
+            {pathname.startsWith('/budgets') && (
+              <span className="absolute bottom-1 h-1 w-1 rounded-full bg-primary" />
+            )}
           </Link>
 
-          {/* Big Center Home Button */}
-          <div className="absolute left-1/2 -translate-x-1/2 -top-5 z-20">
-            <Link
-              href="/dashboard"
-              className={cn(
-                'flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white shadow-lg shadow-emerald-600/30 transition-all duration-300 hover:scale-110 active:scale-95 border-4 border-white',
-                pathname === '/dashboard' ? 'ring-4 ring-emerald-500/20 scale-105' : ''
-              )}
-            >
-              <Home className="h-6 w-6" />
-            </Link>
-          </div>
-
-          {/* Center Spacer for the Big Home Button */}
-          <div className="w-14 shrink-0" />
-
-          {/* Target */}
+          {/* Laporan */}
           <Link
-            href="/goals"
+            href="/reports"
             className={cn(
-              'flex flex-1 flex-col items-center justify-center py-2 transition-all duration-300',
-              pathname.startsWith('/goals') ? 'text-primary font-semibold scale-105' : 'text-slate-400 hover:text-slate-600'
+              'flex flex-1 flex-col items-center justify-center py-2 transition-all duration-300 relative',
+              pathname.startsWith('/reports') ? 'text-primary font-semibold scale-105' : 'text-slate-400 hover:text-slate-600'
             )}
           >
-            <Target className="h-5 w-5 mb-1" />
-            <span className="text-[10px]">Target</span>
-          </Link>
-
-          {/* Profil */}
-          <Link
-            href="/profile"
-            className={cn(
-              'flex flex-1 flex-col items-center justify-center py-2 transition-all duration-300',
-              pathname.startsWith('/profile') ? 'text-primary font-semibold scale-105' : 'text-slate-400 hover:text-slate-600'
+            <BarChart3 className="h-5 w-5 mb-0.5" />
+            <span className="text-[10px]">Laporan</span>
+            {pathname.startsWith('/reports') && (
+              <span className="absolute bottom-1.5 h-1 w-1 rounded-full bg-primary" />
             )}
-          >
-            <User className="h-5 w-5 mb-1" />
-            <span className="text-[10px]">Profil</span>
           </Link>
         </nav>
       </div>

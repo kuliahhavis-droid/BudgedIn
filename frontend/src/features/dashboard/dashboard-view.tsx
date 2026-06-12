@@ -278,7 +278,7 @@ export function DashboardView() {
             {/* Card background glowing orb */}
             <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-emerald-400/20 blur-3xl group-hover:scale-110 transition-transform duration-700" />
             <div className="absolute -left-10 -bottom-10 h-32 w-32 rounded-full bg-teal-400/20 blur-3xl" />
-            
+
             {/* Card Texture Overlay */}
             <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px] opacity-[0.03] pointer-events-none" />
 
@@ -291,7 +291,7 @@ export function DashboardView() {
                 </div>
                 <p className="text-[8px] text-emerald-300/90 font-bold tracking-wider mt-0.5 uppercase">KARTU RENCANA MAHASISWA</p>
               </div>
-              
+
               {/* Chip and Contactless Icons */}
               <div className="flex items-center gap-2">
                 {/* Contactless Signal */}
@@ -333,16 +333,15 @@ export function DashboardView() {
 
         {/* Total Pemasukan - Column span 4 on tablet, 2 on desktop */}
         <div className="md:col-span-4 xl:col-span-2 group relative overflow-hidden rounded-[28px] border border-slate-200/60 bg-white/80 p-6 shadow-soft backdrop-blur-sm transition-all duration-300 hover:shadow-glow hover:border-emerald-500/25 animate-slide-up delay-75">
-          <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-green-500 to-emerald-500" />
           <div className="flex flex-col justify-between h-full min-h-[160px] md:min-h-0">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">TOTAL PEMASUKAN</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Pemasukan</p>
                 <p className="mt-3 text-2xl font-black tracking-tight text-slate-900 animate-count-up tabular-nums">
                   {fmt.format(totalIncome)}
                 </p>
               </div>
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-green-500/10 text-green-600">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600 border border-emerald-500/10 transition-transform duration-300 group-hover:scale-110">
                 <TrendingUp className="h-5 w-5" />
               </div>
             </div>
@@ -354,16 +353,15 @@ export function DashboardView() {
 
         {/* Total Pengeluaran - Column span 4 on tablet, 2 on desktop */}
         <div className="md:col-span-4 xl:col-span-2 group relative overflow-hidden rounded-[28px] border border-slate-200/60 bg-white/80 p-6 shadow-soft backdrop-blur-sm transition-all duration-300 hover:shadow-glow hover:border-red-500/25 animate-slide-up delay-150">
-          <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-red-500 to-rose-500" />
           <div className="flex flex-col justify-between h-full min-h-[160px] md:min-h-0">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">TOTAL PENGELUARAN</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Pengeluaran</p>
                 <p className="mt-3 text-2xl font-black tracking-tight text-slate-900 animate-count-up tabular-nums">
                   {fmt.format(totalExpenses)}
                 </p>
               </div>
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-red-500/10 text-red-600">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-red-500/10 text-red-600 border border-red-500/10 transition-transform duration-300 group-hover:scale-110">
                 <TrendingDown className="h-5 w-5" />
               </div>
             </div>
@@ -375,16 +373,15 @@ export function DashboardView() {
 
         {/* Transaksi - Column span 4 on tablet, 3 on desktop */}
         <div className="md:col-span-4 xl:col-span-3 group relative overflow-hidden rounded-[28px] border border-slate-200/60 bg-white/80 p-6 shadow-soft backdrop-blur-sm transition-all duration-300 hover:shadow-glow hover:border-blue-500/25 animate-slide-up delay-225">
-          <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-500" />
           <div className="flex flex-col justify-between h-full min-h-[160px] md:min-h-0">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">TRANSAKSI TERCATAT</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Transaksi Tercatat</p>
                 <p className="mt-3 text-2xl font-black tracking-tight text-slate-900 animate-count-up tabular-nums">
                   {totalTransactions.toLocaleString()}
                 </p>
               </div>
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-600">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-600 border border-blue-500/10 transition-transform duration-300 group-hover:scale-110">
                 <Receipt className="h-5 w-5" />
               </div>
             </div>
