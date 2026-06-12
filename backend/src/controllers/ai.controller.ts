@@ -13,7 +13,25 @@ export const aiController = {
     const userId = req.user!.id;
     
     // 1. Proses pesan menggunakan Gemini AI
-    const result = await aiService.processChat(userId, message);
+    let result;
+    try {
+      result = await aiService.processChat(userId, message);
+    } catch (aiError: any) {
+      console.error('Gemini Chat Error:', aiError);
+      let friendlyMessage = aiError.message || 'Gagal memproses obrolan';
+      if (friendlyMessage.includes('leaked') || friendlyMessage.includes('API key') || friendlyMessage.includes('API_KEY')) {
+        friendlyMessage = '⚠️ **Gagal terhubung ke Gemini AI**: API Key yang dikonfigurasi di backend (`backend/.env`) terdeteksi tidak valid atau telah diblokir/bocor oleh Google. Silakan ganti dengan API Key yang valid di file `backend/.env`.';
+      }
+      res.json({
+        success: true,
+        data: {
+          message: friendlyMessage,
+          action: 'none',
+          transaction: null
+        }
+      });
+      return;
+    }
 
     let createdTransaction: any = null;
 

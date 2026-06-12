@@ -25,8 +25,17 @@ export const transactionController = {
       res.status(400).json({ success: false, error: 'Data gambar Base64 wajib disertakan' });
       return;
     }
-    const data = await aiScannerService.scanReceipt(image);
-    res.json({ success: true, data });
+    try {
+      const data = await aiScannerService.scanReceipt(image);
+      res.json({ success: true, data });
+    } catch (scanError: any) {
+      console.error('Gemini Scan Receipt Error:', scanError);
+      let friendlyMessage = scanError.message || 'Gagal memindai struk belanja';
+      if (friendlyMessage.includes('leaked') || friendlyMessage.includes('API key') || friendlyMessage.includes('API_KEY')) {
+        friendlyMessage = 'Gagal memproses struk dengan Gemini AI karena API Key backend terdeteksi tidak valid atau bocor/diblokir.';
+      }
+      res.status(400).json({ success: false, message: friendlyMessage });
+    }
   })
 };
 
