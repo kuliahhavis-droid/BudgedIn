@@ -11,7 +11,7 @@ export function useRealtimeEvents() {
     if (!isAuthenticated || !session?.access_token) return;
 
     // Connect to SSE stream
-    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1').replace(/\/$/, '');
+    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || '/api/v1').replace(/\/$/, '');
     const eventSource = new EventSource(
       `${baseUrl}/notifications/stream?token=${encodeURIComponent(session.access_token)}`,
       { withCredentials: true }
