@@ -1,0 +1,34 @@
+Build Failed!
+
+Error: Command failed: npm run build
+Environment variables loaded from .env
+Error: 
+EPERM: operation not permitted, rename 'D:\WEB\BudgedIn\node_modules\.prisma\client\query_engine-windows.dll.node.tmp19284' -> 'D:\WEB\BudgedIn\node_modules\.prisma\client\query_engine-windows.dll.node'
+
+
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path d:\WEB\BudgedIn\frontend
+npm error workspace budgedin-frontend@1.0.0
+npm error location d:\WEB\BudgedIn\frontend
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c prisma generate && next build --webpack
+
+
+> budgedin-frontend@1.0.0 build
+> prisma generate && next build --webpack
+
+Prisma schema loaded from prisma\schema.prisma
+
+Environment variables loaded from .env
+Error: 
+EPERM: operation not permitted, rename 'D:\WEB\BudgedIn\node_modules\.prisma\client\query_engine-windows.dll.node.tmp19284' -> 'D:\WEB\BudgedIn\node_modules\.prisma\client\query_engine-windows.dll.node'
+
+
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path d:\WEB\BudgedIn\frontend
+npm error workspace budgedin-frontend@1.0.0
+npm error location d:\WEB\BudgedIn\frontend
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c prisma generate && next build --webpack
