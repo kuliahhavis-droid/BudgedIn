@@ -20,9 +20,9 @@ export const aiScannerService = {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     
-    // Gunakan model gemini-flash-latest
+    // Gunakan model gemini-2.5-flash
     const model = genAI.getGenerativeModel({
-      model: 'gemini-flash-latest',
+      model: 'gemini-2.5-flash',
       generationConfig: {
         responseMimeType: 'application/json'
       }
